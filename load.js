@@ -1,9 +1,9 @@
 let ulam = [
-    ["Sinigang (Baboy)", 120.00],
-    ["Lechon Sisig", 120.00],
-    ["Dinuguan", 80.00],
-    ["Chopsuey", 60.00],
-    ["Ampalaya", 50.00],
+    ["Sinigang (Baboy)", ""],
+    ["Lechon Sisig", ""],
+    ["Dinuguan", ""],
+    ["Chopsuey", ""],
+    ["Ampalaya", ""],
 ];
 
 let output = document.querySelector("#ulams");
@@ -24,7 +24,7 @@ ulam.forEach(u => {
     input.setAttribute("id", u[0]);
 
     p.classList.add("capitalize");
-    p.innerHTML = `<strong>${u[0]}</strong> - <span>${u[1]}</span>`;
+    p.innerHTML = `<strong>${u[0]}</strong><span>${u[1]}</span>`;
 
     label.appendChild(input)
     label.appendChild(p)

@@ -29,9 +29,9 @@ ulams.forEach(ulam => {
 
         if (ulam.checked) {
             textarea.innerHTML = "";
-            textarea.innerHTML = currentText + `- ${name} : ${price}\n`;
+            textarea.innerHTML = currentText + `- ${name} ${price}\n`;
         } else {
-            let currentItem = `- ${name} : ${price}`;
+            let currentItem = `- ${name} ${price}`;
             let index = textarea.innerHTML.indexOf(currentItem);
 
             textarea.innerHTML = '';

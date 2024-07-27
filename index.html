@@ -14,8 +14,13 @@
         <h1 class="font-bold text-3xl">Miller's Lechon Menu</h1>
 
         <form class="space-y-5 mt-5">
-            <textarea name="output" id="output" class="px-3 py-2 block w-full border border-slate-200 rounded-md min-h-52"></textarea>
-            <button id="copy" type="button" class="bg-green-600 hover:bg-green-700 px-3 py-2 rounded-md text-white font-semibold w-full transition-all ease-in-out">Copy Text</button>
+            <div>
+                <textarea name="output" id="output" class="px-3 py-2 block w-full border border-slate-200 rounded-md min-h-52" readonly></textarea>
+                <div class="grid grid-cols-2 gap-2 mt-2">
+                    <button id="reset" type="reset" class="bg-white px-3 py-2 rounded-md border font-semibold w-full transition-all ease-in-out">Reset</button>
+                    <button id="copy" type="button" class="bg-green-600 hover:bg-green-700 px-3 py-2 rounded-md text-white font-semibold w-full transition-all ease-in-out">Copy Text</button>
+                </div>
+            </div>
 
             <p class="font-semibold">Pili ka ng mga pagkain na nasa menu for today. Wala yung ulam dito? Padagdag mo kay ec. 😗</p>
 

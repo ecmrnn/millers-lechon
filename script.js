@@ -34,7 +34,7 @@ ulams.forEach(ulam => {
             let currentItem = `- ${name} ${price}`;
             let index = textarea.innerHTML.indexOf(currentItem);
 
-            textarea.innerHTML = '';
+            textarea.innerHTML = "";
             textarea.innerHTML = currentText.substring(0, index - 1) + currentText.substring(index + currentItem.length);
         }
     })
@@ -47,4 +47,19 @@ copyBtn.addEventListener('click', () => {
     textarea.setSelectionRange(0, 99999); /* For mobile devices */
   
     navigator.clipboard.writeText(textarea.innerHTML);
+})
+
+// reset text button
+const resetBtn = document.querySelector("#reset");
+resetBtn.addEventListener('click', e => {
+    e.preventDefault();
+    
+    if (confirm("Sureball?")) {
+        let inputs = document.querySelectorAll("input");
+
+        inputs.forEach(input => {
+            input.checked = false;
+        });
+        textarea.innerHTML = `Available na ulam for today! 💖 - ${today}\n\n`;
+    } 
 })

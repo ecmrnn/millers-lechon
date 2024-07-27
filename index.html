@@ -1,13 +1,3 @@
-<?php 
-    $ulams = [
-        ["ulam" => "Sinigang (Baboy)", "price" => 120],
-        ["ulam" => "Lechon Sisig", "price" => 120],
-        ["ulam" => "Dinuguan", "price" => 80],
-        ["ulam" => "Chopsuey", "price" => 60],
-        ["ulam" => "Ampalaya", "price" => 50],
-    ];
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miller's Lechon</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="load.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 <body class="max-w-md mx-auto text-slate-800">
@@ -27,14 +18,7 @@
 
             <p class="font-semibold">Pili ka ng mga pagkain na nasa menu for today...</p>
 
-            <div class="grid gap-2">
-                
-                <?php foreach ($ulams as $ulam) : ?>
-                    <label for="<?= $ulam["ulam"] ?>" class="ulam-label select-none flex items-center gap-5">
-                        <input type="checkbox" name="ulam" id="<?= $ulam["ulam"] ?>">
-                        <p class="capitalize"><strong class="ulam-name"><?= $ulam["ulam"] ?></strong> - <span><?= number_format($ulam["price"], 2) ?></span></p>
-                    </label>
-                <?php endforeach ?>
+            <div class="grid gap-2" id="ulams">
             </div>
         </form>
     </main>

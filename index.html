@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miller's Lechon</title>
-    <link rel="shortcut icon" href="favicon/favicon_io/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/favicon/favicon_io/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="load.js" defer></script>
     <script src="script.js" defer></script>
@@ -17,14 +18,14 @@
             <div>
                 <textarea name="output" id="output" class="px-3 py-2 block w-full border border-slate-200 rounded-md min-h-52" readonly></textarea>
                 <div class="grid grid-cols-2 gap-2 mt-2">
-                    <button id="reset" type="reset" class="bg-white px-3 py-2 rounded-md border font-semibold w-full transition-all ease-in-out">Reset</button>
+                    <button id="reset" type="reset" class="bg-white hover:bg-slate-50 px-3 py-2 rounded-md border border-slate-200 font-semibold w-full transition-all ease-in-out">Reset</button>
                     <button id="copy" type="button" class="bg-green-600 hover:bg-green-700 px-3 py-2 rounded-md text-white font-semibold w-full transition-all ease-in-out">Copy Text</button>
                 </div>
             </div>
 
             <p class="font-semibold">Pili ka ng mga pagkain na nasa menu for today. Wala yung ulam dito? Padagdag mo kay ec. 😗</p>
 
-            <div class="grid sm:grid-cols-2 gap-2" id="ulams">
+            <div class="grid sm:grid-cols-2 gap-2 text-sm" id="ulams">
             </div>
         </form>
     </main>

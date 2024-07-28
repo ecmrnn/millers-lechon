@@ -1,6 +1,6 @@
 // Add ulam here...
 let ulam = [
-    "Sinigang (Baboy)",
+    "Sinigang na Baboy",
     "Lechon Sisig",
     "Lechon Paksiw",
     "Dinuguan",
@@ -11,7 +11,7 @@ let ulam = [
     "Hamonado",
     "Isda",
     "Bopis",
-    "Adobo (Baboy)",
+    "Adobong Baboy",
     "Adobong Sitaw",
     "Lumpiang Toge",
     "Puso ng Saging",
@@ -22,6 +22,7 @@ ulam.sort();
 let output = document.querySelector("#ulams");
 
 const showUlam = u => {
+    let textarea = document.querySelector("#output");
     let label = document.createElement("label");
     let input = document.createElement("input");
     let p = document.createElement("p");
@@ -41,6 +42,29 @@ const showUlam = u => {
     label.appendChild(p)
 
     output.appendChild(label)
+
+    if (textarea.innerHTML.search(u) != -1) {
+        input.checked = true;
+    }
+    
+
+    // add click event on ulam 
+    input.addEventListener('change', () => {
+        const name = input.nextElementSibling.children[0].innerHTML;
+        const price = input.nextElementSibling.children[1].innerHTML;
+        const currentText = textarea.innerHTML;
+        
+        if (input.checked) {
+            textarea.innerHTML = "";
+            textarea.innerHTML = currentText + `- ${name} ${price}\n`;
+        } else {
+            const currentItem = `- ${name} ${price}`;
+            const index = textarea.innerHTML.indexOf(currentItem);
+
+            textarea.innerHTML = "";
+            textarea.innerHTML = currentText.substring(0, index - 1) + currentText.substring(index + currentItem.length);
+        }
+    })
 }
 
 ulam.forEach(u => {

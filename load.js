@@ -11,6 +11,9 @@ let ulam = [
     "Isda",
     "Bopis",
     "Adobo (Baboy)",
+    "Adobong Sitaw",
+    "Lumpiang Toge",
+    "Puso ng Saging",
 ];
 
 ulam.sort();

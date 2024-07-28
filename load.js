@@ -7,14 +7,20 @@ let ulam = [
     "Chopsuey",
     "Ampalaya",
     "Menudo",
-    "Mechado",
+    // Removed Mechado
     "Hamonado",
-    "Isda",
+    "Gatang Tilapia",
     "Bopis",
     "Adobong Baboy",
-    "Adobong Sitaw",
+    "Gatang Sitaw", /* From Adobong Sitaw */
     "Lumpiang Toge",
     "Puso ng Saging",
+    // Added on: 28/07/2024
+    "Bicol Express",
+    "Binagoongan",
+    "Kalabasa",
+    "Gatang Hipon",
+    "Paksiw na Bangus",
 ];
 
 ulam.sort();

@@ -23,6 +23,9 @@ let ulam = [
     "Paksiw na Bangus",
     // Added on: 31/07/2024
     "Sarciadong Isda",
+    // Added on: 01/08/2024
+    "Lumpiang Shanghai",
+    "Tilapia",
 ];
 
 ulam.sort();

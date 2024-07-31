@@ -38,7 +38,7 @@ const openModal = (item) => {
     
     balance.focus();
     tableNumber.innerHTML = item[0];
-    balance.value = localStorage.getItem(item[0]);
+    balance.value = parseInt(localStorage.getItem(item[0]));
     
 }
 closeModalBtn.addEventListener("click", closeModal);

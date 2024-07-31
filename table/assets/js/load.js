@@ -12,7 +12,6 @@ let tables = [
 
 const setup = () => {
     tables.forEach(table => {
-        console.log(localStorage.getItem(table[0]));
         if (localStorage.getItem(table[0]) == 0 || localStorage.getItem(table[0]) == null) {
             localStorage.setItem(table[0], table[1]);
         }
@@ -61,6 +60,22 @@ update.addEventListener("click", () => {
     } else {
         alert('Balance must be greater than zero!');
     }
+})
+
+let paid = document.querySelector("#paid");
+
+paid.addEventListener('click', () => {
+    let currentTable = document.querySelector("#tableNumber").innerHTML;
+    localStorage.setItem(currentTable, 0)
+    while (output.hasChildNodes()) {
+        output.removeChild(output.firstChild)
+    }
+
+    tables.forEach(table => {
+        showTables(table);
+    })
+
+    closeModal();
 })
 
 closeModalBtn.addEventListener("click", closeModal);

@@ -8,11 +8,11 @@ let ulam = [
     "Ampalaya",
     "Menudo",
     // Removed Mechado
-    "Hamonado",
+    "Hamonado Ala Fiesta",
     "Gatang Tilapia",
     "Bopis",
     "Adobong Baboy",
-    "Gatang Sitaw", /* From Adobong Sitaw */
+    "Adobong Sitaw", /* From Gatang Sitaw */
     "Lumpiang Toge",
     "Puso ng Saging",
     // Added on: 28/07/2024
@@ -21,6 +21,8 @@ let ulam = [
     "Kalabasa",
     "Gatang Hipon",
     "Paksiw na Bangus",
+    // Added on: 31/07/2024
+    "Sarciadong Isda",
 ];
 
 ulam.sort();

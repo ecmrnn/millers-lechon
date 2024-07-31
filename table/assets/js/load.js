@@ -12,9 +12,9 @@ let tables = [
 
 const setup = () => {
     tables.forEach(table => {
-        console.log(sessionStorage.getItem(table[0]));
-        if (sessionStorage.getItem(table[0]) == 0 || sessionStorage.getItem(table[0]) == null) {
-            sessionStorage.setItem(table[0], table[1]);
+        console.log(localStorage.getItem(table[0]));
+        if (localStorage.getItem(table[0]) == 0 || localStorage.getItem(table[0]) == null) {
+            localStorage.setItem(table[0], table[1]);
         }
     });
 }
@@ -39,24 +39,28 @@ const openModal = (item) => {
     
     balance.focus();
     tableNumber.innerHTML = item[0];
-    balance.value = sessionStorage.getItem(item[0]);
+    balance.value = localStorage.getItem(item[0]);
     
 }
 
 let update = document.forms["updateTable"]["update"]
 
 update.addEventListener("click", () => {
-    sessionStorage.setItem(document.querySelector("#tableNumber").innerHTML, balance.value);
-
-    while (output.hasChildNodes()) {
-        output.removeChild(output.firstChild)
+    if (balance.value > 0) {
+        localStorage.setItem(document.querySelector("#tableNumber").innerHTML, balance.value);
+    
+        while (output.hasChildNodes()) {
+            output.removeChild(output.firstChild)
+        }
+    
+        tables.forEach(table => {
+            showTables(table);
+        })
+    
+        closeModal();
+    } else {
+        alert('Balance must be greater than zero!');
     }
-
-    tables.forEach(table => {
-        showTables(table);
-    })
-
-    closeModal();
 
 
 })
@@ -83,7 +87,7 @@ const showTables = item => {
     h2.innerHTML = `Table ${item[0]}`;
     
     p.classList.add("text-xs");
-    p.innerHTML = `Balance: ${parseInt(sessionStorage.getItem(item[0])).toFixed(2).toLocaleString('en-US')}`;
+    p.innerHTML = `Balance: ${parseInt(localStorage.getItem(item[0])).toFixed(2).toLocaleString('en-US')}`;
 
     a.addEventListener("click", () => openModal(item))
 

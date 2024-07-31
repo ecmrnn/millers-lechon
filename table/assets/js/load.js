@@ -24,11 +24,11 @@ let output = document.querySelector("#tables");
 let modal = document.querySelector("#modal");
 let closeModalBtn = document.querySelector("#close");
 
+// Modal Events (Close & Open)
 const closeModal = () => {
     modal.classList.remove("fixed");
     modal.classList.add("hidden");
 }
-
 const openModal = (item) => {
     modal.classList.remove("hidden");
     modal.classList.add("fixed");
@@ -41,45 +41,35 @@ const openModal = (item) => {
     balance.value = localStorage.getItem(item[0]);
     
 }
+closeModalBtn.addEventListener("click", closeModal);
 
+// Update Table Eventss (Update & Paid)
 let update = document.forms["updateTable"]["update"]
-
 update.addEventListener("click", () => {
     if (balance.value > 0) {
         localStorage.setItem(document.querySelector("#tableNumber").innerHTML, balance.value);
-    
-        while (output.hasChildNodes()) {
-            output.removeChild(output.firstChild)
-        }
-    
-        tables.forEach(table => {
-            showTables(table);
-        })
-    
-        closeModal();
+        redisplayTable();
     } else {
         alert('Balance must be greater than zero!');
     }
 })
 
 let paid = document.querySelector("#paid");
-
 paid.addEventListener('click', () => {
     let currentTable = document.querySelector("#tableNumber").innerHTML;
     localStorage.setItem(currentTable, 0)
-    while (output.hasChildNodes()) {
-        output.removeChild(output.firstChild)
-    }
-
-    tables.forEach(table => {
-        showTables(table);
-    })
-
-    closeModal();
+    redisplayTable();
 })
 
-closeModalBtn.addEventListener("click", closeModal);
+let reset = document.querySelector("#reset");
+reset.addEventListener('click', () => {
+    tables.forEach(table => {
+        localStorage.setItem(table[0], 0);
+    });
+    redisplayTable();
+})
 
+// Display List of Tables
 const showTables = item => {
     let section = document.querySelector("#tables");
     let a = document.createElement("a");
@@ -110,7 +100,18 @@ const showTables = item => {
 
     section.appendChild(a);
 }
-
 tables.forEach(item => {
     showTables(item);
 });
+
+const redisplayTable = () => {
+    while (output.hasChildNodes()) {
+        output.removeChild(output.firstChild)
+    }
+
+    tables.forEach(table => {
+        showTables(table);
+    })
+
+    closeModal();
+}

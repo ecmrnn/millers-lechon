@@ -11,23 +11,24 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="assets/js/load.js" defer></script>
-    <!-- <script src="assets/js/script.js" defer></script> -->
 </head>
 <body class="max-w-md mx-auto text-slate-800">
     <a href="/index.html" class="sm:fixed pl-3 pr-5 py-2 top-5 left-5 text-xs font-bold rounded-md flex items-center gap-3 transition-all ease-in-out
         hover:bg-green-500 hover:text-white"><span class="material-symbols-outlined">chevron_backward</span> More Tools</a>
         
     <main class="p-5">
-        <h1 class="text-3xl font-bold text-center sm:text-left">Table Manager</h1>
-        <p>Click ka ng table.</p>
+        <hgroup class="text-center sm:text-left">
+            <h1 class="text-3xl font-bold">Table Manager</h1>
+            <p>Click ka ng table.</p>
+        </hgroup>
 
         <section id="tables" class="mt-5 grid grid-cols-2 gap-3">
         </section>
     </main>
 
     <!-- Modal -->
-     <form name="updateTable" id="modal" onsubmit="e.preventDefault()" class="hidden w-screen h-screen bg-black/5 backdrop-blur-md top-0 left-0 pt-20">
-         <div class="max-w-md mx-auto bg-white p-3 rounded-md shadow-lg space-y-3">
+     <form name="updateTable" id="modal" onsubmit="e.preventDefault()" class="p-5 hidden w-screen h-screen bg-black/5 backdrop-blur-md top-0 left-0 pt-20">
+         <div class="max-w-md mx-auto bg-white p-3 rounded-md shadow-lg space-y-3 border border-slate-200">
             <hgroup>
                 <h2 class="font-bold text-lg">Table <span id="tableNumber"></span></h2>
                 <p>Enter or update the balance of the selected table.</p>

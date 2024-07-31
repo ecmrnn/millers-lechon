@@ -61,8 +61,6 @@ update.addEventListener("click", () => {
     } else {
         alert('Balance must be greater than zero!');
     }
-
-
 })
 
 closeModalBtn.addEventListener("click", closeModal);

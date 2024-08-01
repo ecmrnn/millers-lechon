@@ -56,17 +56,21 @@ update.addEventListener("click", () => {
 
 let paid = document.querySelector("#paid");
 paid.addEventListener('click', () => {
-    let currentTable = document.querySelector("#tableNumber").innerHTML;
-    localStorage.setItem(currentTable, 0)
-    redisplayTable();
+    if (confirm("Sureball, bayad na?")) {
+        let currentTable = document.querySelector("#tableNumber").innerHTML;
+        localStorage.setItem(currentTable, 0)
+        redisplayTable();
+    }
 })
 
 let reset = document.querySelector("#reset");
 reset.addEventListener('click', () => {
-    tables.forEach(table => {
-        localStorage.setItem(table[0], 0);
-    });
-    redisplayTable();
+    if (confirm("Sureball?")) {
+        tables.forEach(table => {
+            localStorage.setItem(table[0], 0);
+        });
+        redisplayTable();
+    }
 })
 
 // Display List of Tables

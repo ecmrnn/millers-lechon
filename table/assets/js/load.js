@@ -10,6 +10,44 @@ let tables = [
     [6, 0],
 ]
 
+const addBtn = [
+    "5",
+    "20",
+    "50",
+    "60",
+    "80",
+    "100",
+    "120",
+    "200",
+    "400",
+    "800",
+]
+
+{/* <button type="button" data-value="20" class="">&plus; 20</button> */}
+let addBtns = document.querySelector("#addBtns");
+
+const showAddBtn = (btn) => {
+    let button = document.createElement("button");
+    let buttonClass = "add-balance px-3 py-2 rounded-md border border-slate-200 hover:bg-slate-50 transition-all ease-in-out".split(' ');
+    let balance = document.forms["updateTable"]["balance"];
+
+    button.classList.add(...buttonClass);
+    button.setAttribute("data-value", btn);
+    button.setAttribute("type", "button");
+    button.innerHTML = `&plus; ${btn}`;
+
+    button.addEventListener('click', () => {
+        console.log(button.value);
+        balance.value = parseFloat(balance.value) + parseInt(btn);
+    })
+
+    addBtns.appendChild(button);
+}
+
+addBtn.forEach(btn => {
+    showAddBtn(btn);
+});
+
 const setup = () => {
     tables.forEach(table => {
         if (localStorage.getItem(table[0]) == 0 || localStorage.getItem(table[0]) == null) {

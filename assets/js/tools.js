@@ -21,7 +21,7 @@ const showTool = (tool) => {
 
     // Anchor
     aClass = "block border rounded-md p-3 gap-3 items-start hover:shadow-xl transition-all ease-in-out group".split(' ');
-    a.setAttribute("href", `${tool[0]}/index.html`);
+    a.setAttribute("href", `${tool[0]}`);
     a.classList.add(...aClass);
 
     // Icon

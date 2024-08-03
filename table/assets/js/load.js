@@ -169,7 +169,6 @@ const openModal = (item) => {
     let tableNumber = document.querySelector("#tableNumber");
     let balance = document.forms["updateTable"]["balance"];
     
-    balance.focus();
     tableNumber.innerHTML = item[0];
     balance.value = parseInt(localStorage.getItem(item[0]));
     

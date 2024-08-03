@@ -23,8 +23,9 @@ const addBtn = [
     "800",
 ]
 
-{/* <button type="button" data-value="20" class="">&plus; 20</button> */}
 let addBtns = document.querySelector("#addBtns");
+let addToggle = document.querySelector("#addToggle");
+localStorage.setItem("addToggle", 0);
 
 const showAddBtn = (btn) => {
     let button = document.createElement("button");
@@ -34,16 +35,56 @@ const showAddBtn = (btn) => {
     button.classList.add(...buttonClass);
     button.setAttribute("data-value", btn);
     button.setAttribute("type", "button");
-    button.innerHTML = `&plus; ${btn}`;
+    if (localStorage.getItem("addToggle") == null || localStorage.getItem("addToggle") == 0) {
+        button.innerHTML = `&plus; ${btn}`;
+    } else {
+        button.innerHTML = `&minus; ${btn}`;
+    }
 
     button.addEventListener('click', () => {
-        console.log(button.value);
-        balance.value = parseFloat(balance.value) + parseInt(btn);
+        if (balance.value === "") {
+            balance.value = parseInt(btn);        
+        } else {
+            if (localStorage.getItem("addToggle") == 0) {
+                balance.value = parseFloat(balance.value) + parseInt(btn);
+            } else {
+                if (parseFloat(balance.value) - parseInt(btn) >= 0) {
+                    balance.value = parseFloat(balance.value) - parseInt(btn);
+                } else {
+                    alert("Oops, nuyan may utang?");
+                }
+            }
+        }
     })
 
     addBtns.appendChild(button);
 }
 
+const toggleAddBtn = () => {
+    // 1 = false
+    // 0 = true
+    if (localStorage.getItem("addToggle") == null || localStorage.getItem("addToggle") == 0) {
+        localStorage.setItem("addToggle", 1);
+        addToggle.classList.remove("bg-green-500");
+        addToggle.classList.add("bg-amber-500");
+        addToggle.innerHTML = 'Less';
+    } else {
+        localStorage.setItem("addToggle", 0);
+        addToggle.classList.add("bg-green-500");
+        addToggle.classList.remove("bg-amber-500");
+        addToggle.innerHTML = 'Add';
+    }
+
+    while (addBtns.hasChildNodes()) {
+        addBtns.removeChild(addBtns.firstChild)
+    }
+
+    addBtn.forEach(btn => {
+        showAddBtn(btn);
+    });
+}
+
+addToggle.addEventListener('click', toggleAddBtn);
 addBtn.forEach(btn => {
     showAddBtn(btn);
 });
@@ -114,15 +155,14 @@ reset.addEventListener('click', () => {
 // Display List of Tables
 const showTables = item => {
     let section = document.querySelector("#tables");
-    let a = document.createElement("a");
+    let button = document.createElement("button");
     let span = document.createElement("span");
     let h2 = document.createElement("h2");
     let p = document.createElement("p");
 
     let aClass = "table block p-3 rounded-md border text-center hover:shadow-lg transition-all ease-in-out".split(' ');
 
-    a.classList.add(...aClass);
-    a.setAttribute("href", "#");
+    button.classList.add(...aClass);
 
     // Google Icon
     span.classList.add("material-symbols-outlined");
@@ -134,13 +174,13 @@ const showTables = item => {
     p.classList.add("text-xs");
     p.innerHTML = `Balance: ${parseInt(localStorage.getItem(item[0])).toFixed(2).toLocaleString('en-US')}`;
 
-    a.addEventListener("click", () => openModal(item))
+    button.addEventListener("click", () => openModal(item))
+    
+    button.appendChild(span);
+    button.appendChild(h2);
+    button.appendChild(p);
 
-    a.appendChild(span);
-    a.appendChild(h2);
-    a.appendChild(p);
-
-    section.appendChild(a);
+    section.appendChild(button);
 }
 tables.forEach(item => {
     showTables(item);

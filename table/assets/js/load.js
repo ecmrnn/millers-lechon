@@ -59,19 +59,18 @@ const showAddBtn = (btn) => {
 
     addBtns.appendChild(button);
 }
-
 const toggleAddBtn = () => {
     // 1 = false
     // 0 = true
     if (localStorage.getItem("addToggle") == null || localStorage.getItem("addToggle") == 0) {
         localStorage.setItem("addToggle", 1);
         addToggle.classList.remove("bg-green-500");
-        addToggle.classList.add("bg-amber-500");
+        addToggle.classList.add("bg-red-500");
         addToggle.innerHTML = 'Less';
     } else {
         localStorage.setItem("addToggle", 0);
         addToggle.classList.add("bg-green-500");
-        addToggle.classList.remove("bg-amber-500");
+        addToggle.classList.remove("bg-red-500");
         addToggle.innerHTML = 'Add';
     }
 
@@ -89,6 +88,7 @@ addBtn.forEach(btn => {
     showAddBtn(btn);
 });
 
+// Initialize localStorage
 const setup = () => {
     tables.forEach(table => {
         if (localStorage.getItem(table[0]) == 0 || localStorage.getItem(table[0]) == null) {
@@ -96,7 +96,6 @@ const setup = () => {
         }
     });
 }
-
 setup();
 
 let output = document.querySelector("#tables");
@@ -109,6 +108,20 @@ const closeModal = () => {
     modal.classList.add("hidden");
 }
 const openModal = (item) => {
+    localStorage.setItem("addToggle", 0);
+
+    addToggle.innerHTML = 'Add';
+    addToggle.classList.add("bg-green-500");
+    addToggle.classList.remove("bg-amber-500");
+
+    while (addBtns.hasChildNodes()) {
+        addBtns.removeChild(addBtns.firstChild)
+    }
+
+    addBtn.forEach(btn => {
+        showAddBtn(btn);
+    });
+
     modal.classList.remove("hidden");
     modal.classList.add("fixed");
 
@@ -159,8 +172,11 @@ const showTables = item => {
     let span = document.createElement("span");
     let h2 = document.createElement("h2");
     let p = document.createElement("p");
-
     let aClass = "table block p-3 rounded-md border text-center hover:shadow-lg transition-all ease-in-out".split(' ');
+
+    if (parseInt(localStorage.getItem(item[0])) > 0) {
+        aClass = "table block p-3 rounded-md border bg-slate-200 text-center".split(' ');
+    }
 
     button.classList.add(...aClass);
 

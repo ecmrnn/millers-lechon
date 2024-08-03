@@ -59,7 +59,6 @@ const showAddBtn = (btn) => {
 
     addBtns.appendChild(button);
 }
-
 const toggleAddBtn = () => {
     // 1 = false
     // 0 = true
@@ -89,6 +88,7 @@ addBtn.forEach(btn => {
     showAddBtn(btn);
 });
 
+// Initialize localStorage
 const setup = () => {
     tables.forEach(table => {
         if (localStorage.getItem(table[0]) == 0 || localStorage.getItem(table[0]) == null) {
@@ -96,7 +96,6 @@ const setup = () => {
         }
     });
 }
-
 setup();
 
 let output = document.querySelector("#tables");
@@ -109,6 +108,20 @@ const closeModal = () => {
     modal.classList.add("hidden");
 }
 const openModal = (item) => {
+    localStorage.setItem("addToggle", 0);
+
+    addToggle.innerHTML = 'Add';
+    addToggle.classList.add("bg-green-500");
+    addToggle.classList.remove("bg-amber-500");
+
+    while (addBtns.hasChildNodes()) {
+        addBtns.removeChild(addBtns.firstChild)
+    }
+
+    addBtn.forEach(btn => {
+        showAddBtn(btn);
+    });
+
     modal.classList.remove("hidden");
     modal.classList.add("fixed");
 

@@ -27,6 +27,7 @@ let addBtns = document.querySelector("#addBtns");
 let addToggle = document.querySelector("#addToggle");
 localStorage.setItem("addToggle", 0);
 
+// Toggle button events
 const showAddBtn = (btn) => {
     let button = document.createElement("button");
     let buttonClass = "add-balance px-3 py-2 rounded-md border border-slate-200 hover:bg-slate-50 transition-all ease-in-out".split(' ');
@@ -59,6 +60,7 @@ const showAddBtn = (btn) => {
 
     addBtns.appendChild(button);
 }
+
 const toggleAddBtn = () => {
     // 1 = false
     // 0 = true
@@ -107,12 +109,13 @@ const closeModal = () => {
     modal.classList.remove("fixed");
     modal.classList.add("hidden");
 }
+
 const openModal = (item) => {
     localStorage.setItem("addToggle", 0);
 
     addToggle.innerHTML = 'Add';
     addToggle.classList.add("bg-green-500");
-    addToggle.classList.remove("bg-amber-500");
+    addToggle.classList.remove("bg-red-500");
 
     while (addBtns.hasChildNodes()) {
         addBtns.removeChild(addBtns.firstChild)
@@ -133,6 +136,7 @@ const openModal = (item) => {
     balance.value = parseInt(localStorage.getItem(item[0]));
     
 }
+
 closeModalBtn.addEventListener("click", closeModal);
 
 // Update Table Eventss (Update & Paid)
@@ -198,6 +202,7 @@ const showTables = item => {
 
     section.appendChild(button);
 }
+
 tables.forEach(item => {
     showTables(item);
 });

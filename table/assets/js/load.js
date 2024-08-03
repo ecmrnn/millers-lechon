@@ -10,6 +10,9 @@ let tables = [
     [6, 0],
 ]
 
+// Dine in Profits
+let profits = JSON.parse(localStorage.getItem("dineInProfits"));
+
 const addBtn = [
     "5",
     "20",
@@ -21,7 +24,42 @@ const addBtn = [
     "200",
     "400",
     "800",
-]
+];
+
+let profit = document.querySelector("#profit");
+
+const showProfit = () => {
+    let profits = JSON.parse(localStorage.getItem("dineInProfits"));
+    const profitContainer = document.querySelector("#profits");
+    while(profitContainer.hasChildNodes()) {
+        profitContainer.removeChild(profitContainer.firstChild);
+    }
+    profit.classList.add('hidden');
+
+    if (profits !== null) {
+        profit.classList.remove('hidden');
+        let netProfit = 0;
+        profits.forEach(pr => {
+            let p = document.createElement("p");
+            let date = document.createElement("span");
+            let amount = document.createElement("span");
+            pClass = "flex justify-between".split(' ');
+            p.classList.add(...pClass);
+
+            date.innerHTML = pr[0];
+            amount.innerHTML = `${parseFloat(pr[1]).toLocaleString('en-US')}.00`;
+            p.appendChild(date);
+            p.appendChild(amount);
+
+            netProfit += parseInt(pr[1]);
+        
+            profitContainer.appendChild(p);
+        });
+        
+        document.querySelector("#netProfit").innerHTML = `${parseInt(netProfit).toLocaleString('en-US')}.00`;
+    }
+}
+showProfit();
 
 let addBtns = document.querySelector("#addBtns");
 let addToggle = document.querySelector("#addToggle");
@@ -152,14 +190,51 @@ update.addEventListener("click", () => {
 
 let paid = document.querySelector("#paid");
 paid.addEventListener('click', () => {
-    if (confirm("Sureball, bayad na?")) {
-        let currentTable = document.querySelector("#tableNumber").innerHTML;
-        localStorage.setItem(currentTable, 0)
-        redisplayTable();
+    if (balance.value > 0) {
+        if (confirm("Sureball, bayad na?")) {
+            const months = [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December',
+            ];
+            const dateObj = new Date;
+            let currentTable = document.querySelector("#tableNumber").innerHTML;
+            let minutes = dateObj.getMinutes();
+
+            if (minutes.toString().length == 1) {
+                minutes = minutes.toString().padStart(2, "0");
+            }
+            
+            let time = `${months[dateObj.getMonth()]} ${dateObj.getDate()} / ${dateObj.getHours()}:${minutes}`;
+            localStorage.setItem(currentTable, 0)
+            redisplayTable();
+            
+            // Add to dine in profits          
+            profits = JSON.parse(localStorage.getItem("dineInProfits"));
+            if (profits === null) {
+                localStorage.setItem("dineInProfits", JSON.stringify([[time, balance.value]]));
+            } else {
+                profits.push([time, balance.value]);
+                localStorage.setItem("dineInProfits", JSON.stringify(profits));
+            }
+            showProfit();
+        }
+    } else {
+        alert("Balance must be greater than zero!");
     }
 })
 
 let reset = document.querySelector("#reset");
+let resetProfit = document.querySelector("#resetProfit");
 reset.addEventListener('click', () => {
     if (confirm("Sureball?")) {
         tables.forEach(table => {
@@ -168,6 +243,13 @@ reset.addEventListener('click', () => {
         redisplayTable();
     }
 })
+
+resetProfit.addEventListener('click', () => {
+    if (confirm("Sureball?")) {
+        localStorage.removeItem("dineInProfits");
+        showProfit();
+    }
+});
 
 // Display List of Tables
 const showTables = item => {

@@ -65,12 +65,12 @@ const toggleAddBtn = () => {
     if (localStorage.getItem("addToggle") == null || localStorage.getItem("addToggle") == 0) {
         localStorage.setItem("addToggle", 1);
         addToggle.classList.remove("bg-green-500");
-        addToggle.classList.add("bg-amber-500");
+        addToggle.classList.add("bg-red-500");
         addToggle.innerHTML = 'Less';
     } else {
         localStorage.setItem("addToggle", 0);
         addToggle.classList.add("bg-green-500");
-        addToggle.classList.remove("bg-amber-500");
+        addToggle.classList.remove("bg-red-500");
         addToggle.innerHTML = 'Add';
     }
 
@@ -172,8 +172,11 @@ const showTables = item => {
     let span = document.createElement("span");
     let h2 = document.createElement("h2");
     let p = document.createElement("p");
-
     let aClass = "table block p-3 rounded-md border text-center hover:shadow-lg transition-all ease-in-out".split(' ');
+
+    if (parseInt(localStorage.getItem(item[0])) > 0) {
+        aClass = "table block p-3 rounded-md border bg-slate-200 text-center".split(' ');
+    }
 
     button.classList.add(...aClass);
 

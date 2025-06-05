@@ -1,17 +1,68 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800 font-serif">
-        <nav class="max-w-screen-lg mx-auto relative w-full">
-            <flux:navbar class="absolute top-0 left-1/2 -translate-x-1/2">
-                <flux:navbar.item href="{{ route('home') }}">Home</flux:navbar.item>
-                <flux:navbar.item href="{{ route('home') }}">Services</flux:navbar.item>
-                <flux:navbar.item href="{{ route('home') }}">Reservation</flux:navbar.item>
-                <flux:navbar.item href="{{ route('home') }}">About</flux:navbar.item>
-                <flux:navbar.item href="{{ route('home') }}">Contact</flux:navbar.item>
+    <body class="min-h-screen bg-white dark:bg-zinc-800">
+        {{-- Mobile Navigation --}}
+        <nav x-data="{open: false}" class="flex w-full md:hidden justify-between items-center py-5 relative">
+            <div class="pl-5 flex gap-5 items-center">
+                <flux:button icon="menu" x-on:click="open = !open"></flux:button>
+                <x-app-logo />
+            </div>
+
+            <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle" aria-label="Toggle dark mode" class="mr-5" />
+
+            {{-- Sidebar --}}
+            <div x-show="open" x-cloak class="absolute top-0 h-svh w-full"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                >
+                <div class="absolute inset-0 bg-black/50" x-on:click="open = false"></div>
+
+                <flux:navbar class="absolute left-0 h-svh p-5! flex flex-col items-start bg-white/90 dark:bg-zinc-800/90 backdrop-blur-md w-2/3">
+                    <div class="space-y-5 w-full">
+                        <flux:button icon="x" x-on:click="open = false"></flux:button>
+
+                        <flux:navlist class="w-full">
+                            <flux:navlist.item wire:navigate href="{{ route('home') }}">Home</flux:navlist.item>
+                            <flux:navlist.item wire:navigate href="{{ route('services') }}">Services</flux:navlist.item>
+                            <flux:navlist.group heading="Reservation" expandable>
+                                <flux:navlist.item wire:navigate href="{{ route('reservation') }}">Reserve a Lechon</flux:navlist.item>
+                                <flux:navlist.item wire:navigate href="{{ route('reservation') }}">Find my Reservation</flux:navlist.item>
+                            </flux:navlist.group>
+                            <flux:navlist.item wire:navigate href="{{ route('about') }}">About</flux:navlist.item>
+                            <flux:navlist.item wire:navigate href="{{ route('contact') }}">Contact</flux:navlist.item>
+                        </flux:navlist>
+                    </div>
+                </flux:navbar>
+            </div>
+        </nav>
+
+        <nav class="max-w-screen-lg mx-auto hidden relative w-full md:flex justify-between items-center py-5">
+            <x-app-logo />
+
+            <flux:navbar class="">
+                <flux:navbar.item wire:navigate href="{{ route('home') }}">Home</flux:navbar.item>
+                <flux:navbar.item wire:navigate href="{{ route('services') }}">Services</flux:navbar.item>
+
+                <flux:dropdown>
+                    <flux:navbar.item icon:trailing="chevron-down">Reservation</flux:navbar.item>
+                    <flux:navmenu>
+                        <flux:navmenu.item wire:navigate href="{{ route('reservation') }}">Reserve a Lechon</flux:navmenu.item>
+                        <flux:navmenu.item wire:navigate href="{{ route('reservation') }}">Find my Reservation</flux:navmenu.item>
+                    </flux:navmenu>
+                </flux:dropdown>
+
+                <flux:navbar.item wire:navigate href="{{ route('about') }}">About</flux:navbar.item>
+                <flux:navbar.item wire:navigate href="{{ route('contact') }}">Contact</flux:navbar.item>
             </flux:navbar>
+
+            <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle" aria-label="Toggle dark mode" />
         </nav>
 
         <main class="max-w-screen-lg mx-auto">

@@ -60,7 +60,7 @@ class OrderService {
             $billing->payments()->create([
                 'customer_id' => $customer->id,
                 'amount' => 0,
-                'receipt_image' => $data['receipt_image']->storeAs('receipts', "Receipt - {$order->order_number}"),
+                'receipt_image' => $data['receipt_image']->storeAs('receipts', "Receipt - {$order->order_number}.jpg"),
             ]);
 
             // 6. Send Email

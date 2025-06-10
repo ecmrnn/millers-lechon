@@ -174,7 +174,7 @@ layout('components.layouts.web');
             <flux:subheading>Fill up the form below to reserve a Lechon</flux:subheading>
         </hgroup>
 
-        <form method="post" wire:submit='submit' class="flex flex-col md:flex-row md:border border-zinc-200 dark:border-zinc-700 rounded-lg md:shadow-sm dark:shadow-none">
+        <form method="post" wire:submit='submit' class="flex flex-col md:flex-row md:border border-zinc-200 dark:border-zinc-700 rounded-lg">
             {{-- Steps --}}
             <div class="p-5 bg-zinc-100/50 rounded-lg md:rounded-e-none border md:border-0 md:border-r border-zinc-200 dark:border-zinc-700 dark:bg-zinc-700/25 md:w-1/3 shrink-0">
                 <div class="sticky top-5 space-y-3">
@@ -531,7 +531,7 @@ layout('components.layouts.web');
         </form>
     @else
         <div class="space-y-5 max-w-md mx-auto">
-            <div class="flex justify-center">
+            <div class="pt-5 flex justify-center">
                 <div class="p-3 rounded-full bg-emerald-100/50 dark:bg-emerald-100/0">
                     <flux:icon.badge-check class="text-emerald-600 dark:text-emerald-400" />
                 </div>

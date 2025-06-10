@@ -6,5 +6,5 @@ layout('components.layouts.web');
 ?>
 
 <div>
-    
+    Hello?
 </div>

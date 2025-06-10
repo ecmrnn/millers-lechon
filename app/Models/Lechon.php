@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Item extends Model
+class Lechon extends Model
 {
     protected $guarded = [];
 
     public function orders(): BelongsToMany
     {
-        return $this->belongsToMany(Order::class, 'order_items')
+        return $this->belongsToMany(LechonOrder::class, 'lechon_orders')
                     ->withPivot('quantity', 'price')
                     ->withTimestamps();
     }

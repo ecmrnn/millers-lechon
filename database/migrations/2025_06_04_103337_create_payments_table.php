@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignIdFor(Billing::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
             $table->decimal('amount', 8, 2);
-            $table->enum('payment_method', ['gcash', 'bank_transfer', 'cash'])->default('cash');
+            $table->string('receipt_image');
+            $table->enum('payment_method', ['gcash', 'bank_transfer', 'cash'])->default('gcash');
             $table->timestamps();
         });
     }

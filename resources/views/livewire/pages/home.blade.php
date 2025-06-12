@@ -12,7 +12,7 @@ layout('components.layouts.web');
         </div>
         
         <hgroup class="space-y-3">
-            <h1 class="text-6xl font-serif text-center text-emerald-600 dark:text-emerald-400 font-bold">Original <br> Native <br> Lechon</h1>
+            <h1 class="md:text-6xl text-4xl font-serif text-center text-emerald-600 dark:text-emerald-400 font-bold md:leading-18">Original & Native <br> Miller's Lechon</h1>
             <flux:text class="text-base text-center max-w-sm mx-auto font-semibold">The crispiest, the crunchiest, and the juciest lechon you will ever taste!</flux:text>
         </hgroup>
 

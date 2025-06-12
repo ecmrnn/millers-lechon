@@ -240,7 +240,7 @@ layout('components.layouts.web');
                             <flux:field variant="inline">
                                 <flux:checkbox wire:model="terms" />
                                 
-                                <flux:label>By processing an order on this reservation form, I allow the Miller's Lechon to store my data solely for their operational use.</flux:label>
+                                <flux:label>By processing an order on this reservation form, I allow Miller's Lechon to store and use my data solely for their operational use.</flux:label>
 
                                 <flux:error name="terms" />
                             </flux:field>
@@ -323,7 +323,7 @@ layout('components.layouts.web');
                             <flux:modal name="view-cart">
                                 <div class="space-y-5">
                                     <hgroup>
-                                        <flux:heading>Your Lechon Orders</flux:heading>
+                                        <flux:heading size="lg">Your Lechon Orders</flux:heading>
                                         <flux:subheading>Lechon sizes and quantities added to your cart will appear here</flux:subheading>
                                     </hgroup>
 

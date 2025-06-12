@@ -76,7 +76,7 @@
             </div>
         </nav>
 
-        <main class="max-w-screen-lg mx-auto p-5 md:p-10 min-h-svh md:border-x border-dotted border-zinc-300 dark:border-zinc-600">
+        <main class="max-w-screen-lg mx-auto p-5 pt-10 md:p-10 min-h-svh md:border-x border-dotted border-zinc-300 dark:border-zinc-600">
             {{ $slot }}
         </main>
 

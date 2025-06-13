@@ -10,7 +10,7 @@
         <flux:icon.chevron-down class="size-4 mt-1 transition-all ease-in-out duration-200 group-hover:opacity-100" x-bind:class="open ? 'rotate-180 opacity-100' : 'opacity-50' " />
     </button>
 
-    <div x-show="open" x-collapse>
+    <div x-show="open" x-collapse x-cloak>
         <flux:text class="max-w-md p-5 pt-0">{{ $slot }}</flux:text>
     </div>
 </div>

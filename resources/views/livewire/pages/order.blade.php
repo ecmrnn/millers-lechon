@@ -38,6 +38,8 @@ state([
 ]);
 
 rules()->messages([
+    'first_name.regex' => 'The first name field may contain letters and numbers only.',
+    'last_name.regex' => 'The last name field may contain letters and numbers only.',
     'contact_number.starts_with' => 'The contact number must starts with "9".',
     'contact_number.size' => 'The contact number be 10 digits long.',
     'delivery_address.required_if_declined' => 'The delivery address is required if you choose to have it delivered.',
@@ -100,9 +102,9 @@ $submit = function () {
     switch ($this->step) {
         case 1:
             $this->validate([
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'address' => 'required|string|max:255|regex:/^[A-Za-z0-9\s\.\,]+$/',
+                'first_name' => 'required|string|min:2|max:255|regex:/^[A-Za-z0-9\s]+$/',
+                'last_name' => 'required|string|min:2|max:255|regex:/^[A-Za-z0-9\s]+$/',
+                'address' => 'required|string|min:10|max:255|regex:/^[A-Za-z0-9\s\.\,]+$/',
                 'email' => 'required|email|max:255',
                 'contact_number' => 'required|string|size:12|starts_with:9',
                 'terms' => 'required|accepted',
@@ -175,6 +177,7 @@ layout('components.layouts.web');
         </hgroup>
 
         <form method="post" wire:submit='submit' class="flex flex-col md:flex-row md:border border-zinc-200 dark:border-zinc-700 rounded-lg">
+            @csrf
             {{-- Steps --}}
             <div class="p-5 bg-zinc-100/50 rounded-lg md:rounded-e-none border md:border-0 md:border-r border-zinc-200 dark:border-zinc-700 dark:bg-zinc-700/25 md:w-1/3 shrink-0">
                 <div class="sticky top-5 space-y-3">

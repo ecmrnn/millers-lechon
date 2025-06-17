@@ -38,7 +38,7 @@
                             <flux:navlist.item wire:navigate href="{{ route('services') }}">Services</flux:navlist.item>
                             <flux:navlist.group heading="Order" expandable>
                                 <flux:navlist.item wire:navigate href="{{ route('order') }}">Order a Lechon</flux:navlist.item>
-                                <flux:navlist.item wire:navigate href="{{ route('order') }}">Find my Order</flux:navlist.item>
+                                <flux:navlist.item wire:navigate href="{{ route('find-order') }}">Find my Order</flux:navlist.item>
                             </flux:navlist.group>
                             <flux:navlist.item wire:navigate href="{{ route('about') }}">About</flux:navlist.item>
                             <flux:navlist.item wire:navigate href="{{ route('contact') }}">Contact</flux:navlist.item>
@@ -63,7 +63,7 @@
                         <flux:navbar.item icon:trailing="chevron-down">Order</flux:navbar.item>
                         <flux:navmenu>
                             <flux:navmenu.item wire:navigate href="{{ route('order') }}">Order a Lechon</flux:navmenu.item>
-                            <flux:navmenu.item wire:navigate href="{{ route('order') }}">Find my Order</flux:navmenu.item>
+                            <flux:navmenu.item wire:navigate href="{{ route('find-order') }}">Find my Order</flux:navmenu.item>
                         </flux:navmenu>
                     </flux:dropdown>
                     <flux:navbar.item wire:navigate href="{{ route('about') }}">About</flux:navbar.item>

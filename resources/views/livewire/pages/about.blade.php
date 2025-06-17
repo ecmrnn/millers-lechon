@@ -21,24 +21,24 @@ layout('components.layouts.web');
         <x-placeholder-pattern class="absolute inset-0 size-full stroke-zinc-900/20 dark:stroke-zinc-100/20" />
     </div>
 
-    <div class="flex flex-col md:flex-row gap-10 justify-around py-10">
-        <div class="text-center">
+    <div class="flex flex-col md:flex-row justify-around">
+        <div class="text-center w-full">
             <flux:text>Lechon Served</flux:text>
             <flux:heading size="xl" class="text-3xl md:text-4xl">3,000</flux:heading>
         </div>
 
-        <flux:separator class="md:hidden" />
-        <flux:separator vertical class="hidden my-2 md:block" />
+        <flux:separator class="block md:hidden" />
+        <flux:separator vertical class="hidden md:block" />
 
-        <div class="text-center">
+        <div class="text-center w-full">
             <flux:text>Order Received</flux:text>
             <flux:heading size="xl" class="text-3xl md:text-4xl">3,250</flux:heading>
         </div>
+
+        <flux:separator class="block md:hidden" />
+        <flux:separator vertical class="hidden md:block" />
         
-        <flux:separator class="md:hidden" />
-        <flux:separator vertical class="hidden my-2 md:block" />
-        
-        <div class="text-center">
+        <div class="text-center w-full">
             <flux:text>Cravings Satisfied</flux:text>
             <flux:heading size="xl" class="text-3xl md:text-4xl">5,000</flux:heading>
         </div>

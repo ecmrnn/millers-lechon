@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -21,8 +22,12 @@ class Order extends Model
 
     public function lechons(): BelongsToMany
     {
-        return $this->belongsToMany(LechonOrder::class, 'lechon_orders')
+        return $this->belongsToMany(Lechon::class, 'lechon_orders')
                     ->withPivot('quantity', 'price')
                     ->withTimestamps();
     }
+
+    public $casts = [
+        'status' => OrderStatus::class,
+    ];
 }

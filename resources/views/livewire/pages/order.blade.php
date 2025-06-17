@@ -179,7 +179,7 @@ layout('components.layouts.web');
         <form method="post" wire:submit='submit' class="flex flex-col md:flex-row md:border border-zinc-200 dark:border-zinc-700 rounded-lg">
             @csrf
             {{-- Steps --}}
-            <div class="p-5 bg-zinc-100/50 rounded-lg md:rounded-e-none border md:border-0 md:border-r border-zinc-200 dark:border-zinc-700 dark:bg-zinc-700/25 md:w-1/3 shrink-0">
+            <div class="p-5 bg-zinc-100/50 rounded-lg md:rounded-e-none border md:border-0 md:border-r border-zinc-200 dark:border-zinc-700 dark:bg-zinc-700/50 md:w-1/3 shrink-0">
                 <div class="sticky top-5 space-y-3">
                     <div class="flex gap-5 items-center">
                         <flux:button icon="contact-round" />
@@ -274,7 +274,7 @@ layout('components.layouts.web');
                                     <flux:description>Select your desired size and quantity of lechon</flux:description>
                                 </hgroup>
 
-                                <div class="p-5 space-y-3 border rounded-lg border-zinc-200 dark:bg-white/10 dark:border-white/10">
+                                <div class="p-5 space-y-3 border rounded-lg border-zinc-200 dark:bg-zinc-700/50 dark:border-zinc-700">
                                     <x-img src="{{ $lechon->image }}" alt="No image preview for this lechon" />
 
                                     <flux:heading size="lg">Select Size</flux:heading>
@@ -323,7 +323,7 @@ layout('components.layouts.web');
                             {{-- 
                                 Lechon Cart Modal
                             --}}
-                            <flux:modal name="view-cart">
+                            <flux:modal name="view-cart" class="max-w-lg">
                                 <div class="space-y-5">
                                     <hgroup>
                                         <flux:heading size="lg">Your Lechon Orders</flux:heading>
@@ -464,7 +464,7 @@ layout('components.layouts.web');
                                 <flux:error name="receipt_image" />
                             </flux:callout>
 
-                            <flux:modal name="upload-receipt">
+                            <flux:modal name="upload-receipt" class="max-w-lg w-full">
                                 <div class="space-y-5 overflow-clip">
                                     <hgroup>
                                         <flux:heading size="xl">Upload Receipt</flux:heading>
@@ -550,7 +550,7 @@ layout('components.layouts.web');
             </div>
 
             <div class="grid grid-cols-2 gap-5">
-                <flux:button class="w-full">Track my Order</flux:button>
+                <flux:button class="w-full" wire:navigate href="{{ route('find-order', ['id' => $order_id]) }}">Track my Order</flux:button>
                 <flux:button variant="primary" wire:navigate href="{{ route('order') }}" class="w-full">Create Order</flux:button>
             </div>
         </div>

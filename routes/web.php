@@ -6,6 +6,7 @@ use Livewire\Volt\Volt;
 Volt::route('/', 'pages.home')->name('home');
 Volt::route('/services', 'pages.services')->name('services');
 Volt::route('/order', 'pages.order')->name('order');
+Volt::route('/order-finder/{id?}', 'pages.order.find-order')->name('find-order');
 Volt::route('/about', 'pages.about')->name('about');
 Volt::route('/contact', 'pages.contact')->name('contact');
 

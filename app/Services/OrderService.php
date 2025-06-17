@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\OrderStatus;
 use App\Models\Billing;
 use App\Models\Customer;
 use App\Models\Freebie;
@@ -33,7 +34,7 @@ class OrderService {
                 'delivery_address' => $data['delivery_address'],
                 'delivery_fee' => $data['delivery_fee'] ?? 0,
                 'note' => $data['note'],
-                'status' => 0,
+                'status' => OrderStatus::ORDERED,
             ]);
 
             // 3. Create Lechon Orders
@@ -52,7 +53,9 @@ class OrderService {
             // 4. Create Billing
             $billing = Billing::create([
                 'order_id' => $order->id,
+                'sub_total' => $data['total_amount'],
                 'total_amount' => $data['total_amount'],
+                'balance' => $data['total_amount'],
                 'status' => 0,
             ]);
 

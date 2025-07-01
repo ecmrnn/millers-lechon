@@ -8,14 +8,15 @@ title('Orders');
 
 <div class="flex h-full">
     {{-- Sidebar Actions --}}
-    <aside x-data="{ open: true }" class="p-6 lg:p-8 hidden lg:border-r border-zinc-200 dark:border-zinc-700 lg:flex flex-col justify-between">
+    <aside x-data="{ open: true }" class="p-6 lg:p-8 hidden lg:border-r border-zinc-200 dark:border-zinc-700 lg:flex flex-col justify-between shrink-0"
+        x-bind:class="open ? 'lg:w-[248px]' : 'w-max'">
         <div x-show="open" x-cloak>
             <flux:button icon:leading="plus" variant="primary" class="w-full">Create Order</flux:button>
             <flux:navlist variant="outline" class="mt-6">
                 <flux:navlist.group class="grid">
                     <flux:navlist.item icon="notebook-text">{{ __('List Orders') }}</flux:navlist.item>
                     <flux:navlist.item icon="notebook-pen">{{ __('Draft Orders') }}</flux:navlist.item>
-                    <flux:navlist.item icon="trash">{{ __('Archived Orders') }}</flux:navlist.item>
+                    <flux:navlist.item icon="trash-2">{{ __('Archived Orders') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
         </div>
@@ -33,7 +34,7 @@ title('Orders');
                     <flux:button icon="notebook-pen" variant="ghost"/>
                 </flux:tooltip>
                 <flux:tooltip content="Archived Orders" position="right">
-                    <flux:button icon="trash" variant="ghost"/>
+                    <flux:button icon="trash-2" variant="ghost"/>
                 </flux:tooltip>
             </div>
         </div>
@@ -54,7 +55,7 @@ title('Orders');
                 <flux:button icon:leading="plus" variant="primary" class="w-full">Create Order</flux:button>
                 <flux:navlist.item icon="notebook-text">{{ __('List Orders') }}</flux:navlist.item>
                 <flux:navlist.item icon="notebook-pen">{{ __('Draft Orders') }}</flux:navlist.item>
-                <flux:navlist.item icon="trash">{{ __('Archived Orders') }}</flux:navlist.item>
+                <flux:navlist.item icon="trash-2">{{ __('Archived Orders') }}</flux:navlist.item>
             </flux:navlist.group>
         </div>
 

@@ -13,7 +13,8 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="house" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="notebook" :href="route('orders')" :current="request()->routeIs('orders')" wire:navigate>{{ __('Orders') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
@@ -124,6 +125,12 @@
                 </flux:menu>
             </flux:dropdown>
         </flux:header>
+
+        @if ($title ?? false)
+            <header class="p-6 hidden lg:block lg:px-8 lg:py-4 border-b border-zinc-200 dark:border-zinc-700">
+                <flux:heading size="xl">{{ $title }}</flux:heading>
+            </header>
+        @endif
 
         {{ $slot }}
 

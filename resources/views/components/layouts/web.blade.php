@@ -7,6 +7,7 @@
         <main>
             {{ $slot }}
         </main>
+        
         @fluxScripts
     </body>
 </html>

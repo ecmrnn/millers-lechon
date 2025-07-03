@@ -13,11 +13,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create admin account
+        User::create([
+            'name' => 'Ec Maranan',
+            'email' => 'admin@test.com',
+            'password' => 'admin123',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            LechonSeeder::class
         ]);
     }
 }

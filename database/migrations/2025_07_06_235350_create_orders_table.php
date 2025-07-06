@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderStatus;
 use App\Models\Customer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->time('order_time');
             $table->string('shipping_option')->default('pick up');
             $table->string('delivery_address')->nullable();
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(OrderStatus::Pending);
             $table->timestamps();
         });
     }

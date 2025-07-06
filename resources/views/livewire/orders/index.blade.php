@@ -23,6 +23,7 @@ state([
     'order_time' => '',
     'shipping_option' => 'pick up',
     'delivery_address' => '',
+    'note' => '',
     // Cart details
     'lechon' => '',
     'quantity' => 1,
@@ -68,6 +69,7 @@ $createOrder = function () {
                 'order_time' => 'required',
                 'shipping_option' => 'required',
                 'delivery_address' => 'required_if:shipping_option,deliver|string|max:255',
+                'note' => 'nullable|string|max:255',
             ]);
 
             $this->step = 3;
@@ -94,6 +96,7 @@ $createOrder = function () {
                 'order_time' => $this->order_time,
                 'shipping_option' => $this->shipping_option,
                 'delivery_address' => $this->delivery_address,
+                'note' => $this->note,
                 // Payment details
                 'payment_method' => $this->payment_method,
                 'proof_of_payment' => $this->proof_of_payment,
@@ -362,6 +365,14 @@ $goToStep = function ($step) {
                                     <flux:label>Same as customer's home address</flux:label>
                                 </flux:field>
                             </div>
+                        </div>
+                        
+                        <div>
+                            <flux:textarea
+                                label="Order notes (Optional)"
+                                placeholder="Crunchy yung balat ha? Please make sure na malasa yung meat."
+                                rows="auto"
+                            />
                         </div>
 
                         <div class="flex gap-3 justify-between">

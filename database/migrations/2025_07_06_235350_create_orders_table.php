@@ -20,6 +20,7 @@ return new class extends Migration
             $table->time('order_time');
             $table->string('shipping_option')->default('pick up');
             $table->string('delivery_address')->nullable();
+            $table->string('note')->nullable();
             $table->tinyInteger('status')->default(OrderStatus::Pending);
             $table->timestamps();
         });

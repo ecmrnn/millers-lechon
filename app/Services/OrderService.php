@@ -30,6 +30,7 @@ class OrderService {
                 'order_time' => $order['order_time'],
                 'shipping_option' => $order['shipping_option'],
                 'delivery_address' => $order['shipping_option'] === 'deliver' ? $order['delivery_address'] : null,
+                'note' => $order['note'],
             ]);
 
             // Create lechon orders record

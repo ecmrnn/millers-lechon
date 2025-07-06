@@ -2,10 +2,15 @@
 
 use Livewire\Volt\Component;
 use App\Models\Lechon;
-use function Livewire\Volt\{title, state, rules, mount};
+use App\Services\OrderService;
+use function Livewire\Volt\{title, state, rules, mount, usesFileUploads};
+ 
+usesFileUploads();
 
 state([
     'step' => 1,
+    'min_order_date' => '',
+    'lechons' => [],
     // Personal information
     'first_name' => '',
     'last_name' => '',
@@ -14,17 +19,20 @@ state([
     'contact_number' => '',
     // Order details
     'cart' => [],
-    'lechons' => [],
-    'min_order_date' => '',
     'order_date' => '',
     'order_time' => '',
-    'shipping_option' => 'pick_up',
+    'shipping_option' => 'pick up',
     'delivery_address' => '',
     // Cart details
     'lechon' => '',
     'quantity' => 1,
     'freebie' => '',
     'total' => 0,
+    // Payment details
+    'payment_method' => 'cash',
+    'proof_of_payment' => '',
+    'reference_number' => '',
+    'amount_paid' => 2000,
 ]);
 
 title('Orders');
@@ -58,12 +66,40 @@ $createOrder = function () {
                 'cart' => 'required',
                 'order_date' => 'required|date|after_or_equal:today',
                 'order_time' => 'required',
-                'shipping_option' => 'required|in:pick_up,deliver',
+                'shipping_option' => 'required',
                 'delivery_address' => 'required_if:shipping_option,deliver|string|max:255',
             ]);
 
             $this->step = 3;
             break;
+        default:
+            $this->validate([
+                'payment_method' => 'required',
+                'proof_of_payment' => 'required_unless:payment_method,cash|image|max:1024',
+                'reference_number' => 'required_unless:payment_method,cash|string|max:255',
+                'amount_paid' => 'required|numeric|min:2000', /* Must be configurable */
+            ]);
+
+            $service = new OrderService;
+            $service->create([
+                // Personal information
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'home_address' => $this->home_address,
+                'email' => $this->email,
+                'contact_number' => $this->contact_number,
+                // Order details
+                'cart' => $this->cart,
+                'order_date' => $this->order_date,
+                'order_time' => $this->order_time,
+                'shipping_option' => $this->shipping_option,
+                'delivery_address' => $this->delivery_address,
+                // Payment details
+                'payment_method' => $this->payment_method,
+                'proof_of_payment' => $this->proof_of_payment,
+                'reference_number' => $this->reference_number,
+                'amount_paid' => $this->amount_paid,
+            ]);
     }
 };
 
@@ -179,8 +215,6 @@ $goToStep = function ($step) {
             <flux:button icon:leading="list-filter">Filter</flux:button>
             <flux:input icon="magnifying-glass" placeholder="Search orders" class="w-max" />
         </div>
-
-
     </div>
 
     {{-- Create Order Model --}}
@@ -216,7 +250,7 @@ $goToStep = function ($step) {
 
             {{-- Order Form --}}
             <form x-data="{
-                    shipping_option: 'pick_up',
+                    shipping_option: 'pick up',
                     delivery_address: '',
                     home_address: @entangle('home_address') }"
                     wire:submit='createOrder' class="space-y-3">
@@ -227,10 +261,12 @@ $goToStep = function ($step) {
                                 <flux:heading size="lg">Customer Details</flux:heading>
                                 <flux:subheading>Get the customer's information and contact details</flux:subheading>
                             </hgroup>
+
                             <div class="grid sm:grid-cols-2 gap-3 items-start">
-                                <flux:input label="First name" wire:model='first_name' placeholder="Johnny" clearable />
-                                <flux:input label="Last name" wire:model='last_name' placeholder="Maranan" clearable />
+                                <flux:input id="first_name" label="First name" wire:model='first_name' placeholder="Johnny" clearable />
+                                <flux:input id="last_name" label="Last name" wire:model='last_name' placeholder="Maranan" clearable />
                             </div>
+
                             <flux:input label="Home Address" wire:model='home_address' placeholder="410 Manila East Rd., ..." clearable />
                             <div class="grid sm:grid-cols-2 gap-3 items-start">
                                 <flux:field>
@@ -308,7 +344,7 @@ $goToStep = function ($step) {
                                 <flux:legend>Shipping Options</flux:legend>
                                 <flux:radio.group wire:model='shipping_option' x-model="shipping_option">
                                     <flux:radio
-                                        name="role" value="pick_up" label="Pick Up" checked
+                                        name="role" value="pick up" label="Pick Up" checked
                                         description="Customer will pick up the lechon at our store"
                                     />
                                     <flux:radio
@@ -321,7 +357,7 @@ $goToStep = function ($step) {
                             <div x-show="shipping_option === 'deliver'" class="space-y-3">
                                 <flux:input x-model="delivery_address" wire:model='delivery_address' label="Delivery Address" placeholder="{{ $home_address }}" clearable />
                                 <flux:field variant="inline">
-                                    <flux:checkbox x-on:change="delivery_address = home_address" />
+                                    <flux:checkbox x-on:change="delivery_address = home_address; $wire.set('delivery_address', home_address)" />
     
                                     <flux:label>Same as customer's home address</flux:label>
                                 </flux:field>
@@ -338,7 +374,82 @@ $goToStep = function ($step) {
                         </div>
                         @break
                     @default
-                        
+                        <div class="space-y-3 p-3 border border-zinc-200 rounded-lg dark:border-zinc-700 dark:bg-zinc-700/50">
+                            <flux:heading size="lg">Customer Information</flux:heading>
+                            
+                            <div>
+                                <flux:text><strong>Name: </strong>{{ ucwords(strtolower("$first_name $last_name")) }}</flux:text>
+                                <flux:text><strong>Home Address: </strong>{{ ucwords(strtolower($home_address)) }}</flux:text>
+                                @if ($email)
+                                    <flux:text><strong>Email: </strong>{{ $email }}</flux:text>
+                                @endif
+                                <flux:text><strong>Contact Number: </strong>{{ $contact_number }}</flux:text>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 p-3 border border-zinc-200 rounded-lg dark:border-zinc-700 dark:bg-zinc-700/50">
+                            <flux:heading size="lg">Order Details</flux:heading>
+
+                            <div>
+                                <flux:text><strong>Order Date and Time: </strong>{{ date_format(date_create("$order_date $order_time"), 'F j, Y - g:i A') }}</flux:text>
+                                <flux:text><strong>Shipping Option: </strong>{{ ucwords($shipping_option) }}</flux:text>
+                                @if ($shipping_option === 'deliver')
+                                    <flux:text><strong>Delivery Address: </strong>{{ ucwords(strtolower($delivery_address)) }}</flux:text>
+                                @endif
+                            </div>
+
+                             <x-table>
+                                <x-table.columns>
+                                    <x-table.column>Qty.</x-table.column>
+                                    <x-table.column>Order</x-table.column>
+                                    <x-table.column>Freebie</x-table.column>
+                                </x-table.columns>
+
+                                <x-table.rows>
+                                    @foreach ($cart as $key => $lechon_cart)
+                                        <x-table.row wire:key="{{ $lechon_cart['id'] }}">
+                                            <x-table.cell>{{ $lechon_cart['quantity'] }}</x-table.cell>
+                                            <x-table.cell>{{ $lechon_cart['lechon']->weight . 'kg' }} - Php{{ number_format($lechon_cart['lechon']->price, 2) }}</x-table.cell>
+                                            <x-table.cell>{{ ucwords($lechon_cart['freebie']) }}</x-table.cell>
+                                        </x-table.row>
+                                    @endforeach
+                                </x-table.rows>
+                            </x-table>
+
+                            <div class="flex items-center justify-between text-green-600 dark:text-green-400">
+                                <flux:heading size="lg">Total</flux:heading>
+                                <flux:heading size="lg">Php{{ number_format($total, 2) }}</flux:heading>
+                            </div>
+                        </div>
+
+                        <div x-data='{ payment_method: "cash" }' class="space-y-3 p-3 border border-zinc-200 rounded-lg dark:border-zinc-700 dark:bg-zinc-700/50">
+                            <hgroup>
+                                <flux:heading size="lg">Payment</flux:heading>
+                                <flux:subheading>Upload customer's payment here</flux:subheading>
+                            </hgroup>
+
+                            <flux:select placeholder="Select payment method" label="Payment Method" x-model='payment_method' x-on:change="$wire.set('payment_method', payment_method)">
+                                <flux:select.option value="cash">Cash</flux:select.option>
+                                <flux:select.option value="gcash">GCash</flux:select.option>
+                                <flux:select.option value="bank transfer">Bank Transfer</flux:select.option>
+                            </flux:select>
+
+                            <div x-show="payment_method !== 'cash'" class="space-y-3">
+                                <flux:input type="file" wire:model="proof_of_payment" description="Upload an image (JPG, JPEG, or PNG) of the receipt of the transaction made. Maximum file size is 1024kb." label="Proof of payment"/>
+                                <flux:input wire:model="reference_number" label="Reference Number"/>
+                            </div>
+
+                            <flux:input type="number" placeholder="0" label="Amount paid" wire:model='amount_paid' />
+                        </div>
+
+                        <div class="flex gap-3 justify-between">
+                            <flux:button variant="subtle" wire:click='saveAsDraft'>Save as Draft</flux:button>
+
+                            <div class="flex gap-3">
+                                <flux:button variant="ghost" wire:click='goToStep(2)'>Back</flux:button>
+                                <flux:button variant="primary" type="submit">Submit</flux:button>
+                            </div>
+                        </div>
                 @endswitch
             </form>
         </div>

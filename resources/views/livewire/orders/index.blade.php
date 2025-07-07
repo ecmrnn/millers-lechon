@@ -2,6 +2,7 @@
 
 use Livewire\Volt\Component;
 use App\Models\Lechon;
+use App\Models\Freebie;
 use App\Services\OrderService;
 use function Livewire\Volt\{title, state, rules, mount, usesFileUploads};
  
@@ -28,6 +29,7 @@ state([
     'lechon' => '',
     'quantity' => 1,
     'freebie' => '',
+    'freebies' => [],
     'total' => 0,
     // Payment details
     'payment_method' => 'cash',
@@ -48,6 +50,7 @@ mount(function () {
     $this->order_date = now()->format('Y-m-d');
 
     $this->lechons = Lechon::all();
+    $this->freebies = Freebie::all();
 });
 
 $createOrder = function () {
@@ -114,12 +117,13 @@ $addToCart = function () {
     ]);
 
     $lechon = Lechon::find($this->lechon);
+    $freebie = Freebie::find($this->freebie);
     
     if ($lechon) {
         $this->cart->push([
             'id' => count($this->cart) + 1,
             'lechon' => $lechon,
-            'freebie' => $this->freebie,
+            'freebie' => $freebie,
             'quantity' => $this->quantity,
         ]);
 
@@ -321,8 +325,11 @@ $goToStep = function ($step) {
                             </div>
                             
                             <flux:select placeholder="Choose a freebie" label="Freebie" wire:model='freebie'>
-                                <flux:select.option value="dinuguan">Dinuguan</flux:select.option>
-                                <flux:select.option value="adobong tarapilya">Adobong Tarapilya</flux:select.option>
+                                @foreach ($freebies as $freebie)
+                                    <flux:select.option value="{{ $freebie->id }}">
+                                        {{ ucwords($freebie->name) }}
+                                    </flux:select.option>
+                                @endforeach
                             </flux:select>
 
                             <div class="flex justify-between gap-3">
@@ -488,7 +495,7 @@ $goToStep = function ($step) {
                             <x-table.row wire:key="{{ $lechon_cart['id'] }}">
                                 <x-table.cell>{{ $lechon_cart['quantity'] }}</x-table.cell>
                                 <x-table.cell>{{ $lechon_cart['lechon']->weight . 'kg' }} - Php{{ number_format($lechon_cart['lechon']->price, 2) }}</x-table.cell>
-                                <x-table.cell>{{ ucwords($lechon_cart['freebie']) }}</x-table.cell>
+                                <x-table.cell>{{ ucwords($lechon_cart['freebie']->name) }}</x-table.cell>
                                 <x-table.cell class="text-right">
                                     <flux:tooltip content="Remove from cart" position="top">
                                         <flux:button size="sm" variant="danger" icon="trash-2" square wire:click="removeFromCart({{ $lechon_cart['id'] }})" />

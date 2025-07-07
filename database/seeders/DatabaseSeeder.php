@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            LechonSeeder::class
+            LechonSeeder::class,
+            FreebieSeeder::class,
         ]);
     }
 }

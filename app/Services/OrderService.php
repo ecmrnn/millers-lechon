@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Customer;
 use App\Enums\OrderStatus;
+use App\Models\LechonOrder;
 use Illuminate\Support\Facades\DB;
 
 class OrderService {
@@ -25,7 +26,7 @@ class OrderService {
             }
 
             // Create order record
-            $order = $customer->orders()->create([
+            $created_order = $customer->orders()->create([
                 'order_date' => $order['order_date'],
                 'order_time' => $order['order_time'],
                 'shipping_option' => $order['shipping_option'],
@@ -34,8 +35,18 @@ class OrderService {
             ]);
 
             // Create lechon orders record
-            
+            foreach ($order['cart'] as $key => $cart) {
+                LechonOrder::create([
+                    'order_id' => $created_order->id,
+                    'lechon_id' => $cart['lechon']->id,
+                    'freebie_id' => $cart['freebie']->id,
+                    'quantity' => $cart['quantity'],
+                    'price' => $cart['lechon']->price,
+                ]);
+            }
+
             // Create payment record
+            // dd('test');
         });
     }
 }

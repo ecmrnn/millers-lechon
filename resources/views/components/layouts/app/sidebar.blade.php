@@ -3,7 +3,25 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
+    <body class="min-h-screen bg-white dark:bg-zinc-800"
+        x-data="{ toast_details: {},
+            toast: function(message, options = {}){
+                let description = '';
+                let type = 'default';
+                let position = 'bottom-right';
+                let html = '';
+                if(typeof options.description != 'undefined') description = options.description;
+                if(typeof options.type != 'undefined') type = options.type;
+                if(typeof options.position != 'undefined') position = options.position;
+                if(typeof options.html != 'undefined') html = options.html;  
+
+                window.dispatchEvent(new CustomEvent('toast-show', { detail : { type: type, message: message, description: description, position : position, html: html }}));
+            }}"
+        x-on:toast="toast_details = JSON.parse($event.detail);
+            toast(toast_details.message, {
+                type: toast_details.type,
+                description: toast_details.description,
+            })">
         <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
@@ -134,6 +152,10 @@
 
         {{ $slot }}
 
+        @persist('toast')
+            <x-toast />
+        @endpersist
+        
         @fluxScripts
     </body>
 </html>

@@ -4,8 +4,11 @@ use Livewire\Volt\Component;
 use App\Models\Lechon;
 use App\Models\Freebie;
 use App\Services\OrderService;
-use function Livewire\Volt\{title, state, rules, mount, usesFileUploads};
+use App\Traits\WithToast;
+use function Livewire\Volt\{title, state, rules, mount, uses, usesFileUploads};
  
+uses([WithToast::class]);
+
 usesFileUploads();
 
 state([
@@ -38,7 +41,7 @@ state([
     'amount_paid' => 2000,
 ]);
 
-title('Orders');
+title('Orders'); 
 
 rules()->messages([
     'cart.required' => 'Your cart cannot be empty.',
@@ -106,6 +109,10 @@ $createOrder = function () {
                 'reference_number' => $this->reference_number,
                 'amount_paid' => $this->amount_paid,
             ]);
+
+            $this->dispatch('order-created');
+            $this->toast('Order Created', 'Your order has been successfully created');
+            $this->redirect('orders', navigate: true);
     }
 };
 
@@ -428,7 +435,7 @@ $goToStep = function ($step) {
                                         <x-table.row wire:key="{{ $lechon_cart['id'] }}">
                                             <x-table.cell>{{ $lechon_cart['quantity'] }}</x-table.cell>
                                             <x-table.cell>{{ $lechon_cart['lechon']->weight . 'kg' }} - Php{{ number_format($lechon_cart['lechon']->price, 2) }}</x-table.cell>
-                                            <x-table.cell>{{ ucwords($lechon_cart['freebie']) }}</x-table.cell>
+                                            <x-table.cell>{{ ucwords($lechon_cart['freebie']->name) }}</x-table.cell>
                                         </x-table.row>
                                     @endforeach
                                 </x-table.rows>

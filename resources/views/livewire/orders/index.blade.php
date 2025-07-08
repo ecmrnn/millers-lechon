@@ -15,6 +15,8 @@ state([
     'step' => 1,
     'min_order_date' => '',
     'lechons' => [],
+    'freebies' => [],
+    'tracking_number' => '',
     // Personal information
     'first_name' => '',
     'last_name' => '',
@@ -32,7 +34,6 @@ state([
     'lechon' => '',
     'quantity' => 1,
     'freebie' => '',
-    'freebies' => [],
     'total' => 0,
     // Payment details
     'payment_method' => 'cash',
@@ -89,7 +90,7 @@ $createOrder = function () {
             ]);
 
             $service = new OrderService;
-            $service->create([
+            $result = $service->create([
                 // Personal information
                 'first_name' => $this->first_name,
                 'last_name' => $this->last_name,
@@ -112,7 +113,8 @@ $createOrder = function () {
 
             $this->dispatch('order-created');
             $this->toast('Order Created', 'Your order has been successfully created');
-            $this->redirect('orders', navigate: true);
+            $this->step = 4;
+            $this->tracking_number = $result->tracking_number;
     }
 };
 
@@ -156,6 +158,32 @@ $saveAsDraft = function () {
 
 $goToStep = function ($step) {
     $this->step = $step;
+};
+
+$resetForm = function () {
+    $this->step = 1;
+    // Personal information
+    $this->first_name = '';
+    $this->last_name = '';
+    $this->home_address = '';
+    $this->email = '';
+    $this->contact_number = '';
+    // Order details
+    $this->cart = collect();
+    $this->order_time = now()->format('Y-m-d');
+    $this->shipping_option = 'pick up';
+    $this->delivery_address = '';
+    $this->note = '';
+    // Cart details
+    $this->lechon = '';
+    $this->quantity = 1;
+    $this->freebie = '';
+    $this->total = 0;
+    // Payment details
+    $this->payment_method = 'cash';
+    $this->proof_of_payment = '';
+    $this->reference_number = '';
+    $this->amount_paid = 2000;
 };
 ?>
 
@@ -240,27 +268,29 @@ $goToStep = function ($step) {
             </hgroup>
 
             {{-- Steps --}}
-            <div x-data="{ step: @entangle('step') }" class="grid sm:grid-cols-3 gap-3">
-                @if ($step == 1)
-                    <flux:button variant="primary" icon:leading="circle-user-round" class="w-full">Customer Details</flux:button>
-                @else
-                    <flux:button variant="filled" icon:leading="circle-user-round" class="w-full" wire:click='goToStep(1)'>Customer Details</flux:button>
-                @endif
+            @if ($step <= 3)
+                <div x-data="{ step: @entangle('step') }" class="grid sm:grid-cols-3 gap-3">
+                    @if ($step == 1)
+                        <flux:button variant="primary" icon:leading="circle-user-round" class="w-full">Customer Details</flux:button>
+                    @else
+                        <flux:button variant="filled" icon:leading="circle-user-round" class="w-full" wire:click='goToStep(1)'>Customer Details</flux:button>
+                    @endif
 
-                @if ($step == 2)
-                    <flux:button variant="primary" icon:leading="piggy-bank" class="w-full">Order Details</flux:button>
-                @elseif ($step >= 2)
-                    <flux:button variant="filled" icon:leading="piggy-bank" class="w-full" wire:click='goToStep(2)'>Order Details</flux:button>
-                @else
-                    <flux:button disabled variant="subtle" icon:leading="piggy-bank" class="w-full">Order Details</flux:button>
-                @endif
+                    @if ($step == 2)
+                        <flux:button variant="primary" icon:leading="piggy-bank" class="w-full">Order Details</flux:button>
+                    @elseif ($step >= 2)
+                        <flux:button variant="filled" icon:leading="piggy-bank" class="w-full" wire:click='goToStep(2)'>Order Details</flux:button>
+                    @else
+                        <flux:button disabled variant="subtle" icon:leading="piggy-bank" class="w-full">Order Details</flux:button>
+                    @endif
 
-                @if ($step == 3)
-                    <flux:button variant="primary" icon:leading="wallet-cards" class="w-full">Payment</flux:button>
-                @else
-                    <flux:button disabled variant="subtle" icon:leading="wallet-cards" class="w-full">Payment</flux:button>
-                @endif
-            </div>
+                    @if ($step == 3)
+                        <flux:button variant="primary" icon:leading="wallet-cards" class="w-full">Payment</flux:button>
+                    @else
+                        <flux:button disabled variant="subtle" icon:leading="wallet-cards" class="w-full">Payment</flux:button>
+                    @endif
+                </div>
+            @endif
 
             {{-- Order Form --}}
             <form x-data="{
@@ -398,7 +428,7 @@ $goToStep = function ($step) {
                             </div>
                         </div>
                         @break
-                    @default
+                    @case(3)
                         <div class="space-y-3 p-3 border border-zinc-200 rounded-lg dark:border-zinc-700 dark:bg-zinc-700/50">
                             <flux:heading size="lg">Customer Information</flux:heading>
                             
@@ -475,7 +505,21 @@ $goToStep = function ($step) {
                                 <flux:button variant="primary" type="submit">Submit</flux:button>
                             </div>
                         </div>
-                @endswitch
+                        @break
+                    @default
+                        <div class="p-3 pt-6 text-center border rounded-lg border-zinc-200 dark:border-zinc-700 dark:bg-zinc-700/50 grid place-items-center gap-3">
+                            <flux:icon.badge-check class="size-12" />
+
+                            <hgroup class="text-center">
+                                <flux:heading size="lg">Order Created!</flux:heading>
+                                <flux:subheading>Your order has been successfully created!</flux:subheading>
+                            </hgroup>
+
+                            <flux:input label="Order ID" description="Copy and send this Order ID to the customer for tracking purposes" wire:model='tracking_number' copyable readonly />
+
+                            <flux:button variant="primary" wire:click='resetForm' icon:leading="plus">Create Order</flux:button>
+                        </div>
+                    @endswitch
             </form>
         </div>
     </flux:modal>

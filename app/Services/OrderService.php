@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderService {
     public function create($order) {
-        DB::transaction(function () use ($order) {
+        return DB::transaction(function () use ($order) {
             // Create customer record
             $customer = null;
 
@@ -27,6 +27,7 @@ class OrderService {
 
             // Create order record
             $created_order = $customer->orders()->create([
+                'tracking_number' => generateId('ORD'),
                 'order_date' => $order['order_date'],
                 'order_time' => $order['order_time'],
                 'shipping_option' => $order['shipping_option'],
@@ -47,6 +48,7 @@ class OrderService {
 
             // Create payment record
             // dd('test');
+            return $created_order;
         });
     }
 }

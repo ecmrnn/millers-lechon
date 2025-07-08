@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
+            $table->string('tracking_number');
             $table->date('order_date');
             $table->time('order_time');
             $table->string('shipping_option')->default('pick up');

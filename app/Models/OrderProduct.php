@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class OrderProduct extends Model
+class OrderProduct extends Pivot
 {
-    //
+    public function freebie(): BelongsTo
+    {
+        return $this->belongsTo(Freebie::class);
+    }
 }

@@ -17,7 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
     
     Route::resource('customers', CustomerController::class);
-    Route::post('customers/register', [CustomerController::class, 'register'])->name('customers.register');
 });
+
+Route::post('customers/register', [CustomerController::class, 'register'])->name('customers.register');
 
 require __DIR__.'/settings.php';

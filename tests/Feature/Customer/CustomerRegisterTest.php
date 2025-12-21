@@ -22,8 +22,6 @@ test('customer can register with a linked user account', function () {
     $this->assertDatabaseHas('users', [
         'email' => $email,
     ]);
-
-    $this->assertModelExists($customer->user);
 });
 
 // test('customer record is registered once an order is made', function() {

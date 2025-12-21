@@ -3,16 +3,29 @@
 use App\Models\Customer;
 
 test('customer can register with a linked user account', function () {
-    $customer = Customer::factory()->create();
-    $user = $customer->user;
+    $email = 'maranan@gmail.com';
+    $customerData = [
+        'email' => $email,
+        'password' => 'AVeryStrongPassword!',
+        'first_name' => 'Ec',
+        'last_name' => 'Maranan',
+        'phone_number' => '09262355376',
+        'street' => null,
+        'city' => null,
+        'province' => null,
+    ];
 
+    $response = $this->post(route('customers.register'), $customerData);
+   
+    $response->assertStatus(201);
+    
     $this->assertDatabaseHas('users', [
-        'id' => $customer->user->id,
+        'email' => $email,
     ]);
 
     $this->assertModelExists($customer->user);
 });
 
-test('customer record is registered once an order is made', function() {
-    // to be continued...
-});
+// test('customer record is registered once an order is made', function() {
+//     // to be continued...
+// });

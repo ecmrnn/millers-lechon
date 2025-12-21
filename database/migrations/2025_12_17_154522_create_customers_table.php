@@ -17,12 +17,12 @@ return new class extends Migration
             // Customer personal details
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('phone_number');
+            $table->string('phone_number')->nullable();
             $table->string('email')->unique();
             // Address fields
-            $table->string('street');
-            $table->string('city');
-            $table->string('province');
+            $table->string('street')->nullable();
+            $table->string('city')->nullable();
+            $table->string('province')->nullable();
             $table->timestamps();
         });
     }

@@ -11,11 +11,13 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::resource('customers', CustomerController::class);
-Route::post('customers/register', [CustomerController::class, 'register'])->name('customers.register');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+    
+    Route::resource('customers', CustomerController::class);
+    Route::post('customers/register', [CustomerController::class, 'register'])->name('customers.register');
+});
 
 require __DIR__.'/settings.php';

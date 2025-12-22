@@ -23,8 +23,9 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // Add foreign key to orders table
         Schema::table('orders', function (Blueprint $table) {
-            $table->foreignIdFor(Cart::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Cart::class)->after('customer_id')->nullable()->constrained()->cascadeOnDelete();
         });
     }
 

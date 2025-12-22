@@ -34,4 +34,9 @@ class Order extends Model
     {
         return $this->hasManyThrough(Payment::class, OrderTransaction::class);
     }
+
+    public function cart(): HasOne
+    {
+        return $this->hasOne(Cart::class, 'converted_order_id');
+    }
 }

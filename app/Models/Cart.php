@@ -4,9 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Cart extends Model
 {
-    /** @use HasFactory<\Database\Factories\CartFactory> */
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'converted_order_id');
+    }
 }

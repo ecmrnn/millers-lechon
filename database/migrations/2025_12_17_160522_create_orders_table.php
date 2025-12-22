@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Cart;
 use App\Models\Customer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +15,6 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Cart::class)->nullable()->constrained()->cascadeOnDelete();
             // Order details
             $table->date('order_date');
             $table->time('order_time');

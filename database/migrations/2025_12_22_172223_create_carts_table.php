@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Cart;
+use App\Models\Customer;
 use App\Models\Order;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,11 +16,15 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Customer::class)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Order::class, 'converted_order_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('session_id')->nullable();
             $table->enum('status', ['active', 'checkedout'])->default('active');
             $table->timestamps();
+        });
+
+        Schema::table('orders', function (Blueprint $table) {
+            $table->foreignIdFor(Cart::class)->nullable()->constrained()->cascadeOnDelete();
         });
     }
 

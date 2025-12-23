@@ -15,12 +15,12 @@ class CartService
         $userId = Auth::id();
         
         return Cart::firstOrCreate(
-            ['user_id' => $userId],
+            ['customer_id' => $userId],
             ['session_id' => $sessionId, 'status' => 'active']
         );
     }
 
-    public function addItem(int $productId, int $quantity, ?int $weight = null, ?int $freebieId = null): void
+    public function addItem(int $productId, int $quantity, ?int $weight = null, ?int $freebieId = null): Cart
     {
         $cart = $this->getCart();
         $product = Product::findOrFail($productId);
@@ -34,9 +34,11 @@ class CartService
             ],
             [
                 'quantity' => $quantity,
-                'price_at_addition' => $product->price,
+                'price' => $product->price,
             ]
         );
+
+        return $cart->fresh();
     }
 
     public function removeItem($item): void

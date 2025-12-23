@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,5 +21,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::post('customers/register', [CustomerController::class, 'register'])->name('customers.register');
+Route::group(['prefix' => 'cart'], function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add-item', [CartController::class, 'addItem'])->name('cart.addItem');
+});
+
 
 require __DIR__.'/settings.php';

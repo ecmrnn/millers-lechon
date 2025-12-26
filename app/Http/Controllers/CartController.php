@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\CartItem;
 use App\Models\Product;
 use App\Services\CartService;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class CartController extends Controller
             'weight' => 'nullable|integer',
             'freebie_id' => 'nullable|exists:freebies,id',
         ]);
-        
+
         $cart = $this->cartService->addItem(
             $validated['product_id'],
             $validated['quantity'],  
@@ -49,5 +50,16 @@ class CartController extends Controller
         );
 
         return response()->json(['cart' => $cart], 201);
+    }
+
+    public function removeItem(Request $response)
+    {
+        $validated = $response->validate([
+            'cart_item_id' => 'exists:cart_items,id|required'
+        ]);
+
+        $cart = $this->cartService->removeItem($validated['cart_item_id']);
+
+        return response()->json(['cart' => $cart], 200);
     }
 }

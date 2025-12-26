@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class CartService
@@ -13,43 +15,66 @@ class CartService
     {
         $sessionId = Session::getId();
         $userId = Auth::id();
-        
-        return Cart::firstOrCreate(
-            ['customer_id' => $userId],
-            ['session_id' => $sessionId, 'status' => 'active']
+
+        if ($userId)
+        {
+            return Cart::where('customer_id', Auth::id())->firstOrCreate(
+                ['customer_id' => Auth::id()],
+                ['session_id' => $sessionId, 'status' => 'active']
+            );
+        }
+
+        return Cart::where('session_id', $sessionId)->firstOrCreate(
+            ['session_id' => $sessionId],
+            ['status' => 'active']
         );
     }
 
-    public function addItem(int $productId, int $quantity, ?int $weight = null, ?int $freebieId = null): Cart
+    public function addItem(int $productId, int $quantity, ?int $weight = null, ?int $freebieId = null)
     {
         $cart = $this->getCart();
         $product = Product::findOrFail($productId);
 
         // Update existing item or create new one
-        $cartItem = $cart->items()->updateOrCreate(
-            [
+        return DB::transaction(function () use ($cart, $productId, $quantity, $weight, $freebieId, $product) {
+            $item = $cart->items()
+                ->where([
+                    'product_id' => $productId,
+                    'freebie_id' => $freebieId,
+                    'weight' => $weight,
+                ])
+                ->first();
+
+            if ($item) {    
+                $item->increment('quantity', $quantity);
+                return $item->fresh();
+            }
+
+            return $cart->items()->create([
                 'product_id' => $productId,
                 'freebie_id' => $freebieId,
-                'weight' => $weight
-            ],
-            [
                 'quantity' => $quantity,
                 'price' => $product->price,
-            ]
-        );
-
-        return $cart->fresh();
+                'weight' => $weight,
+            ]);
+        });
     }
 
-    public function removeItem($item): void
+    public function removeItem($itemId)
     {
         $cart = $this->getCart();
-        $cart->items()->where('id', $item->id)->delete();
+
+        return DB::transaction(function () use ($cart, $itemId) {
+            $cart->items()->where('id', $itemId)->delete();
+        });
     }
 
-    public function removeAllItems(): void
+    public function removeAllItems()
     {
         $cart = $this->getCart();
-        $cart->items()->delete();
+
+        return DB::transaction(function () use ($cart) {
+            $cart->items()->delete();
+        });
     }
 }

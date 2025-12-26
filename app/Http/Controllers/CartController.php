@@ -25,14 +25,6 @@ class CartController extends Controller
         // return Inertia::render('cart/Index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
     public function addItem(Request $request)
     {
         $validated = $request->validate([
@@ -52,13 +44,19 @@ class CartController extends Controller
         return response()->json(['cart' => $cart], 201);
     }
 
-    public function removeItem(Request $response)
+    public function removeItem(Request $request)
     {
-        $validated = $response->validate([
+        $validated = $request->validate([
             'cart_item_id' => 'exists:cart_items,id|required'
         ]);
 
         $cart = $this->cartService->removeItem($validated['cart_item_id']);
+
+        return response()->json(['cart' => $cart], 200);
+    }
+
+    public function clear(Request $request) {
+        $cart = $this->cartService->removeAllItems();
 
         return response()->json(['cart' => $cart], 200);
     }

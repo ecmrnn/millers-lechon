@@ -15,7 +15,7 @@ class CartService
     {
         $sessionId = Session::getId();
         $userId = Auth::id();
-
+        
         if ($userId)
         {
             return Cart::where('customer_id', Auth::id())->firstOrCreate(

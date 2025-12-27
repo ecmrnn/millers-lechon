@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\Cart;
-use App\Models\CartItem;
+use App\Models\Customer;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -75,6 +76,30 @@ class CartService
 
         return DB::transaction(function () use ($cart) {
             $cart->items()->delete();
+        });
+    }
+
+    public function mergeCart(Customer $customer, string $sessionId)
+    {
+        $guestCart = Cart::where('session_id', $sessionId)->first();
+
+        if (!$guestCart) return;
+
+        $existingCart = $customer->cart;
+
+        DB::transaction(function () use ($customer, $guestCart, $existingCart, $sessionId) {
+            if ($existingCart) {
+                foreach ($guestCart->items as $item) {
+                    $item->update(['cart_id' => $existingCart->id]);
+                }
+
+                $guestCart->delete();
+            } else {
+                $guestCart->update([
+                    'customer_id' => $customer->id,
+                    'session_id' => null,
+                ]);
+            }
         });
     }
 }

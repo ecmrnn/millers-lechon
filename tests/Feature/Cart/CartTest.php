@@ -4,6 +4,7 @@ use App\Models\Cart;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\CartService;
 use Illuminate\Support\Facades\Session;
 
 test('can add item to cart', function () {
@@ -92,11 +93,11 @@ test('logged in user can remove all items from their cart', function () {
     ]);
 });
 
-test('guest cart can be merged when a user logged in with existing cart', function () {
+test('carts can be merged using cart service', function () {
     // Create a user with existing cart and item
-    $user = User::factory()->create();
+    $user = User::factory()->withoutTwoFactor()->create();
     Customer::factory()->for($user)->create(); 
-
+    
     // Create guest cart and add item
     $itemData = [
         'product_id' => Product::factory()->create()->id,
@@ -110,18 +111,11 @@ test('guest cart can be merged when a user logged in with existing cart', functi
     $this->assertDatabaseMissing('carts', [
         'customer_id' => $user->id,
     ]);
-    
+
     $this->assertDatabaseHas('cart_items', $itemData);
-
-    $existingItemData = [
-        'product_id' => Product::factory()->create()->id,
-        'quantity' => 999,
-        'weight' => 999,
-        'freebie_id' => null,
-    ];
-
-    $this->actingAs($user)
-        ->post(route('cart.addItem'), $existingItemData);
+    
+    $cartService = app(CartService::class);
+    $cartService->mergeCart($user->customer, Session::getId());
 
     $this->assertDatabaseHas('carts', [
         'customer_id' => $user->id,

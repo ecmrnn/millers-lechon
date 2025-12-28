@@ -82,13 +82,34 @@ class CartService
     public function mergeCart(Customer $customer, string $sessionId)
     {
         $guestCart = Cart::where('session_id', $sessionId)->first();
-
+    
         if (!$guestCart) return;
-
+    
         $existingCart = $customer->cart;
 
         DB::transaction(function () use ($customer, $guestCart, $existingCart, $sessionId) {
             if ($existingCart) {
+                $duplicateItemIds = [];
+
+                // Merge quantities when same product exists in both carts
+                foreach ($guestCart->items as $item) {
+                    $existingItem = $existingCart->items()
+                        ->where([
+                            'product_id' => $item->product_id,
+                            'freebie_id' => $item->freebie_id,
+                            'weight' => $item->weight])
+                        ->first();
+                    
+                    if ($existingItem) {
+                        $existingItem->increment('quantity', $item->quantity);
+                        $duplicateItemIds[] = $item->id;
+                    } 
+                }
+
+                if (!empty($duplicateItemIds)) {
+                    $guestCart->items()->whereIn('id', $duplicateItemIds)->delete();
+                }
+
                 $guestCart->items()->update(['cart_id' => $existingCart->id]);
                 $guestCart->delete();
             } else {

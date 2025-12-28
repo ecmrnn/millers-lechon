@@ -89,15 +89,12 @@ class CartService
 
         DB::transaction(function () use ($customer, $guestCart, $existingCart, $sessionId) {
             if ($existingCart) {
-                foreach ($guestCart->items as $item) {
-                    $item->update(['cart_id' => $existingCart->id]);
-                }
-
+                $guestCart->items()->update(['cart_id' => $existingCart->id]);
                 $guestCart->delete();
             } else {
                 $guestCart->update([
                     'customer_id' => $customer->id,
-                    'session_id' => null,
+                    'session_id' => Session::getId(),
                 ]);
             }
         });

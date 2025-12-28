@@ -91,3 +91,39 @@ test('logged in user can remove all items from their cart', function () {
         'cart_id' => Cart::where('customer_id', $user->id)->first()->id
     ]);
 });
+
+test('guest cart can be merged when a user logged in with existing cart', function () {
+    // Create a user with existing cart and item
+    $user = User::factory()->create();
+    Customer::factory()->for($user)->create(); 
+
+    // Create guest cart and add item
+    $itemData = [
+        'product_id' => Product::factory()->create()->id,
+        'quantity' => 999,
+        'weight' => 999,
+        'freebie_id' => null,
+    ];
+
+    $this->post(route('cart.addItem'), $itemData);
+
+    $this->assertDatabaseMissing('carts', [
+        'customer_id' => $user->id,
+    ]);
+    
+    $this->assertDatabaseHas('cart_items', $itemData);
+
+    $existingItemData = [
+        'product_id' => Product::factory()->create()->id,
+        'quantity' => 999,
+        'weight' => 999,
+        'freebie_id' => null,
+    ];
+
+    $this->actingAs($user)
+        ->post(route('cart.addItem'), $existingItemData);
+
+    $this->assertDatabaseHas('carts', [
+        'customer_id' => $user->id,
+    ]);
+});

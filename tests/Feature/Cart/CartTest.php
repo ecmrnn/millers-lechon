@@ -96,11 +96,12 @@ test('logged in user can remove all items from their cart', function () {
 test('carts can be merged using cart service', function () {
     // Create a user with existing cart and item
     $user = User::factory()->withoutTwoFactor()->create();
+    $productId = Product::factory()->create()->id;
     Customer::factory()->for($user)->create(); 
     
     // Create guest cart and add item
     $itemData = [
-        'product_id' => Product::factory()->create()->id,
+        'product_id' => $productId,
         'quantity' => 999,
         'weight' => 999,
         'freebie_id' => null,

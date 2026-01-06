@@ -56,9 +56,11 @@ class CheckoutService
             ]);
 
             // Create initial payment record
+            $imagePath = $data['image']->store('payments') ?? null;
+
             $transaction->payments()->create([
                 'amount' => 0,
-                'image' => $data['image'] ?? null,
+                'image' => $imagePath,
                 'mode_of_payment' => 'gcash',
             ]);
 

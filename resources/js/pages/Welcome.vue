@@ -2,6 +2,7 @@
 import { Head } from '@inertiajs/vue3';
 import Site from '../layouts/Site.vue';
 import { CalendarClock, ChefHat, HandPlatter, Map, MessageCircleHeart, Quote, Sparkles, Timer, Truck, Utensils } from 'lucide-vue-next';
+import Section from '@/components/Section.vue';
 
 withDefaults(
     defineProps<{
@@ -98,7 +99,7 @@ const mapsSrc = base + mapsApi + query;
         </div>
 
         <!-- What you need to know -->
-        <section class="p-10 lg:p-20 bg-white rounded-3xl space-y-10">
+        <Section gradientStart="right">
             <div class="text-center grid place-items-center">
                 <Sparkles :size="48"></Sparkles>
                 <h2 class="text-5xl font-semibold mt-5 mb-2.5 lg:mt-10">What You Need To Know</h2>
@@ -115,10 +116,10 @@ const mapsSrc = base + mapsApi + query;
                     </div>
                 </div>
             </div>
-        </section>
+        </Section>
 
         <!-- What other people says -->
-        <section class="p-10 lg:p-20 bg-white rounded-3xl space-y-10">
+        <Section gradientStart="left">
             <div class="text-center grid place-items-center">
                 <MessageCircleHeart :size="48"></MessageCircleHeart>
                 <h2 class="text-5xl font-semibold mt-5 mb-2.5 lg:mt-10">What Other People Says</h2>
@@ -138,10 +139,10 @@ const mapsSrc = base + mapsApi + query;
                     </div>
                 </div>
             </div>
-        </section>
+        </Section>
 
          <!-- Where to find us -->
-        <section class="p-10 lg:p-20 bg-white rounded-3xl space-y-10">
+        <Section gradientStart="right">
             <div class="text-center grid place-items-center">
                 <Map :size="48"></Map>
                 <h2 class="text-5xl font-semibold mt-5 mb-2.5 lg:mt-10">Where To Find Us</h2>
@@ -157,6 +158,6 @@ const mapsSrc = base + mapsApi + query;
                     allowfullscreen>
                 </iframe>
             </div>
-        </section>
+        </Section>
     </Site>
 </template>

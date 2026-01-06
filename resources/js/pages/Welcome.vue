@@ -75,7 +75,7 @@ const feedbacks = [
 
 const mapsApi = import.meta.env.VITE_MAPS_EMBED_API_KEY;
 const base = 'https://www.google.com/maps/embed/v1/place?key=';
-const query = '&q=410+Manila+East+Rd+Hulo+Pililla+Rizal'
+const query = '&q=Millers+Lechon+Aka+Johnnys+Lechon'
 const mapsSrc = base + mapsApi + query;
 </script>
 
@@ -143,7 +143,7 @@ const mapsSrc = base + mapsApi + query;
 
          <!-- Where to find us -->
         <Section gradientStart="right">
-            <div class="text-center grid place-items-center">
+            <div class="text-center grid place-items-center mb-10">
                 <Map :size="48"></Map>
                 <h2 class="text-5xl font-semibold mt-5 mb-2.5 lg:mt-10">Where To Find Us</h2>
                 <p class="text-xl max-w-[500px]">We are on Google Maps! You may use Waze and enter our address to reach us. See ya!</p>

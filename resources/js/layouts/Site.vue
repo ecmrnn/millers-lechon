@@ -1,19 +1,14 @@
 <script setup lang="ts">
+import Navigation from '@/components/Navigation.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { Link } from '@inertiajs/vue3';
-import { Menu, ShoppingCart } from 'lucide-vue-next';
+import { ShoppingCart } from 'lucide-vue-next';
 </script>
 
 <template>
     <div class="bg-zinc-100/50 tracking-wide">
-        <header class="p-5 sticky z-50 top-0 bg-zinc-100 flex justify-between items-center">
-            <button class="flex gap-5 items-center hover:cursor-pointer">
-                <div class="aspect-square p-3.5 rounded-full border-2 border-stone-800/25 bg-amber-400 grid place-items-center">
-                    <Menu></Menu>
-                </div>
-    
-                <p class="font-bold uppercase">Menu</p>
-            </button>
+        <header class="p-5 sticky z-50 top-0 bg-zinc-100 flex justify-between items-start">
+            <Navigation></Navigation>
     
             <div class="flex gap-5 items-stretch">
                 <Link href="/cart">

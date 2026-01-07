@@ -78,7 +78,6 @@ const mapsApi = import.meta.env.VITE_MAPS_EMBED_API_KEY;
 const base = 'https://www.google.com/maps/embed/v1/place?key=';
 const query = '&q=Millers+Lechon+Aka+Johnnys+Lechon'
 const mapsSrc = base + mapsApi + query;
-console.log(mapsSrc);
 </script>
 
 <template>

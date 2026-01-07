@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = defineProps(['gradientStart']);
-const gradientClass = "w-[1000px] z-0 bg-radial from-green-200 to-white to-70% aspect-square rounded-full absolute";
+const gradientClass = "w-[1000px] z-0 bg-radial from-green-200/75 to-white to-70% aspect-square rounded-full absolute";
 let rightGradient = "";
 let leftGradient = "";
 

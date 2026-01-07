@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import Site from '../layouts/Site.vue';
 import { CalendarClock, ChefHat, HandPlatter, Map, MessageCircleHeart, Quote, Sparkles, Timer, Truck, Utensils } from 'lucide-vue-next';
 import Section from '@/components/Section.vue';
@@ -94,8 +94,8 @@ const mapsSrc = base + mapsApi + query;
             <p class="max-w-[500px]">Nested in the heart of Pililla, Rizal, Miller’s Lechon is a family-owned culinary destination known for its perfectly roasted lechon and heartfelt Filipino hospitality.</p>
             
             <div class="flex flex-col md:flex-row gap-5">
-                <Button>Order Lechon</Button>
-                <Button variant="secondary">About Miller's</Button>
+                <Link href="/menu"><Button>Order Lechon</Button></Link>
+                <Link href="/about"><Button variant="secondary">About Miller's</Button></Link>
             </div>
         </div>
 

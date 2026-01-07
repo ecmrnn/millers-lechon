@@ -2,12 +2,12 @@
 import { Link } from '@inertiajs/vue3';
 import { Home, Menu, NotebookTabs, PiggyBank, X } from 'lucide-vue-next';
 import { ref } from 'vue';
-const menuToggle = ref(false);
+const menuToggle = ref(true);
 const links = [
     {
         'icon': Home,
         'title': 'Home',
-        'href': '/home',
+        'href': '/',
         'description': 'The gateway to the Millers Lechon experience. Take a look on our offerings and feedbacks from our previous customers.',
     },
     {

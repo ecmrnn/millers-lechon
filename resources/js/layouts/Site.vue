@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '@/components/ui/button/Button.vue';
 import { Link } from '@inertiajs/vue3';
 import { Menu, ShoppingCart } from 'lucide-vue-next';
 </script>
@@ -22,7 +23,7 @@ import { Menu, ShoppingCart } from 'lucide-vue-next';
                 </Link>
     
                 <Link href="/login">
-                    <button class="px-5 rounded-full h-full border-2 border-stone-800/25 bg-amber-400 grid place-items-center uppercase font-semibold">Login</button>
+                    <Button>Login</Button>
                 </Link>
             </div>
         </header>

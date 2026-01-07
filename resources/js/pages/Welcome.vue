@@ -3,6 +3,7 @@ import { Head } from '@inertiajs/vue3';
 import Site from '../layouts/Site.vue';
 import { CalendarClock, ChefHat, HandPlatter, Map, MessageCircleHeart, Quote, Sparkles, Timer, Truck, Utensils } from 'lucide-vue-next';
 import Section from '@/components/Section.vue';
+import Button from '@/components/ui/button/Button.vue';
 
 withDefaults(
     defineProps<{
@@ -77,6 +78,7 @@ const mapsApi = import.meta.env.VITE_MAPS_EMBED_API_KEY;
 const base = 'https://www.google.com/maps/embed/v1/place?key=';
 const query = '&q=Millers+Lechon+Aka+Johnnys+Lechon'
 const mapsSrc = base + mapsApi + query;
+console.log(mapsSrc);
 </script>
 
 <template>
@@ -87,14 +89,14 @@ const mapsSrc = base + mapsApi + query;
     <Site>
         <!-- Hero Section -->
         <div class="grid place-items-center text-white space-y-10 text-center p-20 bg-green-900 rounded-3xl">
-            <h1 class="text-9xl font-black uppercase">Miller's <br /> Lechon</h1>
+            <h1 class="text-6xl lg:text-9xl font-black uppercase">Miller's <br /> Lechon</h1>
             <h2 class="uppercase text-xl font-semibold">Serving Pililla since 1974</h2>
 
             <p class="max-w-[500px]">Nested in the heart of Pililla, Rizal, Miller’s Lechon is a family-owned culinary destination known for its perfectly roasted lechon and heartfelt Filipino hospitality.</p>
             
-            <div class="flex gap-5">
-                <button class="px-5 py-3 rounded-full h-full border-2 border-stone-800/25 text-black bg-amber-400 uppercase font-bold">Order Lechon</button>
-                <button class="px-5 py-3 rounded-full h-full border-2 border-stone-800/25 text-black bg-white uppercase font-bold">About Miller's</button>
+            <div class="flex flex-col md:flex-row gap-5">
+                <Button>Order Lechon</Button>
+                <Button variant="secondary">About Miller's</Button>
             </div>
         </div>
 
@@ -102,7 +104,7 @@ const mapsSrc = base + mapsApi + query;
         <Section gradientStart="right">
             <div class="text-center grid place-items-center">
                 <Sparkles :size="48"></Sparkles>
-                <h2 class="text-5xl font-semibold mt-5 mb-2.5 lg:mt-10">What You Need To Know</h2>
+                <h2 class="text-3xl lg:text-5xl font-semibold mt-5 mb-2.5 lg:mt-10">What You Need To Know</h2>
                 <p class="text-xl max-w-[500px]">Explore our services to have a glimpse of what we can do for you</p>
             </div>
 
@@ -122,7 +124,7 @@ const mapsSrc = base + mapsApi + query;
         <Section gradientStart="left">
             <div class="text-center grid place-items-center">
                 <MessageCircleHeart :size="48"></MessageCircleHeart>
-                <h2 class="text-5xl font-semibold mt-5 mb-2.5 lg:mt-10">What Other People Says</h2>
+                <h2 class="text-3xl lg:text-5xl font-semibold mt-5 mb-2.5 lg:mt-10">What Other People Says</h2>
                 <p class="text-xl max-w-[500px]">Read the feedbacks our customer says about Miller&apos;s Lechon</p>
             </div>
 
@@ -130,7 +132,7 @@ const mapsSrc = base + mapsApi + query;
                 <div v-bind:key="feedback.id" v-for="feedback in feedbacks" class="p-5 space-y-5 lg:space-y-10 lg:p-10">
                     <Quote :size="48"></Quote>
                     
-                    <p class="text-justify text-2xl italic">{{ feedback.testimony }}</p>
+                    <p class="text-justify text-lg lg:text-2xl italic">{{ feedback.testimony }}</p>
                     
                     <div>
                         <h3 class="font-bold capitalize text-2xl mb-2.5">{{ feedback.name + ', ' + feedback.address  }}</h3>    
@@ -145,7 +147,7 @@ const mapsSrc = base + mapsApi + query;
         <Section gradientStart="right">
             <div class="text-center grid place-items-center mb-10">
                 <Map :size="48"></Map>
-                <h2 class="text-5xl font-semibold mt-5 mb-2.5 lg:mt-10">Where To Find Us</h2>
+                <h2 class="text-3xl lg:text-5xl font-semibold mt-5 mb-2.5 lg:mt-10">Where To Find Us</h2>
                 <p class="text-xl max-w-[500px]">We are on Google Maps! You may use Waze and enter our address to reach us. See ya!</p>
             </div>
 

@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import Anchor from '@/components/Anchor.vue';
+// import Anchor from '@/components/Anchor.vue';
 import Section from '@/components/Section.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Site from '@/layouts/Site.vue';
 import { Crown, Ham, Inbox, PiggyBank } from 'lucide-vue-next';
 // import { Link } from '@inertiajs/vue3';
+const props = defineProps([
+    'categories'
+]);
 </script>
 
 <template>
@@ -40,7 +43,7 @@ import { Crown, Ham, Inbox, PiggyBank } from 'lucide-vue-next';
         </Section>
 
         <!-- Menu Header -->
-        <section class="p-5 bg-white rounded-3xl sticky top-24 z-20
+        <section class="py-5 p-5 lg:px-20 bg-white rounded-3xl sticky top-24 z-20
             before:content-[''] before:w-10 before:absolute before:h-full before:bg-white before:left-0 before:top-0 before:-translate-x-1/2
             after:content-[''] after:w-10 after:absolute after:h-full after:bg-white after:right-0 after:top-0 after:translate-x-1/2">
             <div class="grid grid-cols-3 gap-5">
@@ -70,5 +73,21 @@ import { Crown, Ham, Inbox, PiggyBank } from 'lucide-vue-next';
                 </button>
             </div>
         </section>
+
+        <!-- Lechon Fiesta -->
+         <Section v-bind:key="category.id" v-for="category in props.categories">
+            <div>
+                <p>{{  category.name }}</p>
+                <p>{{  category.description }}</p>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div v-for="product in category.products" v-bind:key="product.id" class="p-5 border-2 border-zinc-200 rounded-2xl space-y-2.5">
+                        <p>{{  product.name }}</p>
+                        <p>{{  product.price }}</p>
+                        <p>{{  product.description }}</p>
+                    </div>
+                </div>
+            </div>
+         </Section>
     </Site>
 </template>

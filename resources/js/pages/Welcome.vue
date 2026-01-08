@@ -5,15 +5,6 @@ import { CalendarClock, ChefHat, HandPlatter, Map, MessageCircleHeart, Quote, Sp
 import Section from '@/components/Section.vue';
 import Button from '@/components/ui/button/Button.vue';
 
-withDefaults(
-    defineProps<{
-        canRegister: boolean;
-    }>(),
-    {
-        canRegister: true,
-    },
-);
-
 const services =  [
     {
         'icon': Truck,

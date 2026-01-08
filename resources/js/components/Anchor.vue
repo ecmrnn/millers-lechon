@@ -3,5 +3,5 @@
 </script>
 
 <template>
-    <div :id="props.id" class="absolute w-2 -top-48 aspect-square bg-red-500"></div>
+    <div :id="props.id" class="absolute -top-48 aspect-square left-0"></div>
 </template>

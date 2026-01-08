@@ -16,42 +16,42 @@ class ProductSeeder extends Seeder
     {
         $lechonFiestaProducts = [
             [
-                'name' => '10kg.',
+                'name' => 'Lechon 10kg.',
                 'description' => 'Our small, classic whole roast. Provides generous servings for 40 to 50 guests, perfect for intimate family celebrations and gatherings. (Cooked Weight: 10kg)',
                 'price' => 9000,
             ],
             [
-                'name' => '12kg.',
+                'name' => 'Lechon 12kg.',
                 'description' => 'Ideal for mid-sized events. Guaranteed crisp skin and juicy meat, serving 50 to 60 people with ease. A popular choice for anniversaries. (Cooked Weight: 12kg)',
                 'price' => 11000,
             ],
             [
-                'name' => '15kg.',
+                'name' => 'Lechon 15kg.',
                 'description' => 'A substantial feast that comfortably serves 60 to 70 guests. Great value for larger birthdays or reunions. (Cooked Weight: 15kg)',
                 'price' => 13000,
             ],
             [
-                'name' => '18kg.',
+                'name' => 'Lechon 18kg.',
                 'description' => 'Excellent choice for bigger parties, accommodating 70 to 90 guests. Our traditional roast prepared with signature spices. (Cooked Weight: 18kg)',
                 'price' => 16000,
             ],
             [
-                'name' => '20kg.',
+                'name' => 'Lechon 20kg.',
                 'description' => 'The true party starter! Serves between 90 to 100 people. Order this size to receive a complimentary Dinuguan or Adobong Tarapilya. (Cooked Weight: 20kg)',
                 'price' => 17000,
             ],
             [
-                'name' => '23kg.',
+                'name' => 'Lechon 23kg.',
                 'description' => 'Ready for a major event, easily satisfying 100 to 120 guests. Provides maximum visual impact and superior flavor. (Cooked Weight: 23kg)',
                 'price' => 19000,
             ],
             [
-                'name' => '25kg.',
+                'name' => 'Lechon 25kg.',
                 'description' => 'A massive roast capable of feeding 120 to 150 people. The perfect centerpiece for weddings, fiestas, and company events. (Cooked Weight: 25kg)',
                 'price' => 21000,
             ],
             [
-                'name' => '26kg.+',
+                'name' => 'Lechon 26kg.+',
                 'description' => 'Our largest offering, serving 150 to 200+ guests. Ideal for grand celebrations. Contact us for custom quotes on even larger roasts. (Cooked Weight: 26kg+)',
                 'price' => 23000,
             ],

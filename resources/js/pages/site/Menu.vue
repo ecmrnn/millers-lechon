@@ -1,12 +1,14 @@
 <script setup lang="ts">
-// import Anchor from '@/components/Anchor.vue';
+import Anchor from '@/components/Anchor.vue';
 import Section from '@/components/Section.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Site from '@/layouts/Site.vue';
 import { Crown, Ham, Inbox, PiggyBank } from 'lucide-vue-next';
 // import { Link } from '@inertiajs/vue3';
+
 const props = defineProps([
-    'categories'
+    'categories',
+    'highlight',
 ]);
 </script>
 
@@ -25,13 +27,13 @@ const props = defineProps([
         </div>
         
         <!-- What do you call this again? -->
-        <Section gradientStart="left">
+        <Section gradientStart="left" v-if="props.highlight !== null">
             <div class="grid lg:grid-cols-2 gap-5">
                 <div class="space-y-5">
                     <Crown :size="48" class="text-amber-400"></Crown>
-                    <h2 class="text-2xl lg:text-4xl font-bold capitalize">lechon belly, <br /> perfect for any occasion!</h2>
-                    <p class="font-semibold">Starting at Php1,000.00</p>
-                    <p class="text-justify max-w-[600px]">Boneless and rolled with special herbs and spices for maximum flavor and easy carving. A decadent, presentation-ready centerpiece that serves 10–15 guests.</p>
+                    <h2 class="text-2xl lg:text-4xl font-bold capitalize">{{ props.highlight.name }}, <br /> perfect for any occasion!</h2>
+                    <p class="font-semibold">Starting at {{ Number(props.highlight.price).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}</p>
+                    <p class="text-justify max-w-[600px]">{{ props.highlight.description }}</p>
                     
                     <Button variant="secondary">Add to Cart</Button>
                 </div>
@@ -43,12 +45,11 @@ const props = defineProps([
         </Section>
 
         <!-- Menu Header -->
-        <section class="py-5 p-5 lg:px-20 bg-white rounded-3xl sticky top-24 z-20
-            before:content-[''] before:w-10 before:absolute before:h-full before:bg-white before:left-0 before:top-0 before:-translate-x-1/2
-            after:content-[''] after:w-10 after:absolute after:h-full after:bg-white after:right-0 after:top-0 after:translate-x-1/2">
+        <section class="py-5 p-5 lg:px-20 bg-white sticky top-24 z-20 shadow-[-20px_0_white,20px_0_white,0_2px_rgb(245,245,245,0.5)]">
+            <Anchor id="menu"></Anchor>
             <div class="grid grid-cols-3 gap-5">
                 <button class="p-5 border-2 rounded-2xl border-zinc-200 bg-white lg:text-left flex flex-col text-center lg:flex-row gap-5 items-center">
-                    <PiggyBank :size="32"></PiggyBank>
+                    <PiggyBank :size="32" class="hidden md:block"></PiggyBank>
                     
                     <div>
                         <h2 class="text-lg leading-none lg:text-2xl font-semibold">Lechon Fiesta</h2>
@@ -56,7 +57,7 @@ const props = defineProps([
                     </div>
                 </button>
                 <button class="p-5 border-2 rounded-2xl border-zinc-200 bg-white lg:text-left flex flex-col text-center lg:flex-row gap-5 items-center">
-                    <Ham :size="32"></Ham>
+                    <Ham :size="32" class="hidden md:block"></Ham>
                     
                     <div>
                         <h2 class="text-lg leading-none lg:text-2xl font-semibold">Lechon Familia</h2>
@@ -64,7 +65,7 @@ const props = defineProps([
                     </div>
                 </button>
                 <button class="p-5 border-2 rounded-2xl border-zinc-200 bg-white lg:text-left flex flex-col text-center lg:flex-row gap-5 items-center">
-                    <Inbox :size="32"></Inbox>
+                    <Inbox :size="32" class="hidden md:block"></Inbox>
                     
                     <div>
                         <h2 class="text-lg leading-none lg:text-2xl font-semibold">Food Trays</h2>
@@ -75,16 +76,25 @@ const props = defineProps([
         </section>
 
         <!-- Lechon Fiesta -->
-         <Section v-bind:key="category.id" v-for="category in props.categories">
+         <Section v-bind:key="category.id" v-for="category in props.categories" :gradientStart="category.id % 2 == 0 ? 'right' : 'left'">      
             <div>
-                <p>{{  category.name }}</p>
-                <p>{{  category.description }}</p>
+                <div class="mb-10">
+                    <h2 class="text-2xl lg:text-4xl font-bold">{{  category.name }}</h2>
+                    <p>{{  category.description }}</p>
+                </div>
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <div v-for="product in category.products" v-bind:key="product.id" class="p-5 border-2 border-zinc-200 rounded-2xl space-y-2.5">
-                        <p>{{  product.name }}</p>
-                        <p>{{  product.price }}</p>
+                    <div v-for="product in category.products" v-bind:key="product.id" class="p-5 bg-white border-2 border-zinc-200 rounded-2xl space-y-5">
+                        <img src="" class="aspect-video rounded-xl bg-green-200" />
+                        
+                        <div>
+                            <h3 class="capitalize font-semibold text-xl">{{  product.name }}</h3>
+                            <p class="font-semibold">{{  Number(product.price).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}</p>
+                        </div>
+
                         <p>{{  product.description }}</p>
+
+                        <Button variant="secondary">Add to Cart</Button>
                     </div>
                 </div>
             </div>

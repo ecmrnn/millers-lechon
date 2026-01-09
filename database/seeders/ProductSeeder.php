@@ -62,16 +62,19 @@ class ProductSeeder extends Seeder
                 'name' => 'lechon tilad',
                 'description' => 'The perfect serving of our crispy-skinned, savory roast, already chopped and ready to eat. Ideal for small, casual gatherings of 8–10 people.',
                 'price' => 1000,
+                'unit_type' => 'kg'
             ],
             [
                 'name' => 'lechon belly',
                 'description' => 'Boneless and rolled with special herbs and spices for maximum flavor and easy carving. A decadent, presentation-ready centerpiece that serves 10–15 guests.',
                 'price' => 1000,
+                'unit_type' => 'kg'
             ],
             [
                 'name' => 'lechon head',
                 'description' => 'The crispiest part of the whole roast, often used for celebratory presentations. Includes the head and collar, providing rich meat and ultra-crisp skin. Best for small groups of 4–6.',
                 'price' => 700,
+                'unit_type' => 'kg'
             ],
         ];
 

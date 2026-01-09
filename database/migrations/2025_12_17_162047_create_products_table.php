@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->string('image')->nullable();
+            $table->enum('unit_type', ['pc', 'kg'])->default('pc');
             $table->boolean('is_available')->default(true);
             $table->timestamps();
         });

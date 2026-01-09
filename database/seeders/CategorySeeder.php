@@ -17,6 +17,7 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'Lechon Fiesta',
                 'description' => 'For Large Occassions',
+                'has_freebies' => true
             ],
             [
                 'name' => 'Lechon Familia',

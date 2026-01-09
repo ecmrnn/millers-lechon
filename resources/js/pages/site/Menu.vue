@@ -2,14 +2,39 @@
 import Anchor from '@/components/Anchor.vue';
 import Section from '@/components/Section.vue';
 import Button from '@/components/ui/button/Button.vue';
+import Input from '@/components/ui/input/Input.vue';
+import Label from '@/components/ui/label/Label.vue';
 import Site from '@/layouts/Site.vue';
-import { Crown, Ham, Inbox, PiggyBank } from 'lucide-vue-next';
+import { Form } from '@inertiajs/vue3';
+import { Crown } from 'lucide-vue-next';
+import { computed, ref, watch } from 'vue';
 // import { Link } from '@inertiajs/vue3';
 
-const props = defineProps([
-    'categories',
-    'highlight',
-]);
+const props = defineProps({
+    categories: Object,
+    highlight: Object,
+    freebies: Object
+});
+
+const cartModalOpen = ref(false);
+const selectedProduct = ref();
+
+const openProductModal = (product: object) => {
+    selectedProduct.value = product;
+    cartModalOpen.value = true;
+};
+
+const hasFreebies = computed(() => {
+    return selectedProduct.value.category.has_freebies === 1;
+});
+
+watch(cartModalOpen, (value) => {
+    if (value) {
+        document.body.classList.add('overflow-hidden');
+    } else {
+        document.body.classList.remove('overflow-hidden');
+    }
+})
 </script>
 
 <template>
@@ -27,7 +52,7 @@ const props = defineProps([
         </div>
         
         <!-- What do you call this again? -->
-        <Section gradientStart="left" v-if="props.highlight !== null">
+        <Section gradientStart="left" v-if="props.highlight">
             <div class="grid lg:grid-cols-2 gap-5">
                 <div class="space-y-5">
                     <Crown :size="48" class="text-amber-400"></Crown>
@@ -35,7 +60,7 @@ const props = defineProps([
                     <p class="font-semibold">Starting at {{ Number(props.highlight.price).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}</p>
                     <p class="text-justify max-w-[600px]">{{ props.highlight.description }}</p>
                     
-                    <Button variant="secondary">Add to Cart</Button>
+                    <Button variant="secondary" @click="openProductModal(props.highlight)">Add to Cart</Button>
                 </div>
 
                 <div class="aspect-video bg-green-200 rounded-2xl">
@@ -45,38 +70,24 @@ const props = defineProps([
         </Section>
 
         <!-- Menu Header -->
-        <section class="py-5 p-5 lg:px-20 bg-white sticky top-24 z-20 shadow-[-20px_0_white,20px_0_white,0_2px_rgb(245,245,245,0.5)]">
+        <section v-if="props.categories !== null" class="py-5 p-5 lg:px-20 bg-white sticky top-24 z-20 shadow-[-20px_0_white,20px_0_white,0_2px_rgb(245,245,245,0.5)]">
             <Anchor id="menu"></Anchor>
             <div class="grid grid-cols-3 gap-5">
-                <button class="p-5 border-2 rounded-2xl border-zinc-200 bg-white lg:text-left flex flex-col text-center lg:flex-row gap-5 items-center">
-                    <PiggyBank :size="32" class="hidden md:block"></PiggyBank>
-                    
-                    <div>
-                        <h2 class="text-lg leading-none lg:text-2xl font-semibold">Lechon Fiesta</h2>
-                        <p class="hidden lg:block">For Large Occassions</p>
-                    </div>
-                </button>
-                <button class="p-5 border-2 rounded-2xl border-zinc-200 bg-white lg:text-left flex flex-col text-center lg:flex-row gap-5 items-center">
-                    <Ham :size="32" class="hidden md:block"></Ham>
-                    
-                    <div>
-                        <h2 class="text-lg leading-none lg:text-2xl font-semibold">Lechon Familia</h2>
-                        <p class="hidden lg:block">For Family/Any Occassion</p>
-                    </div>
-                </button>
-                <button class="p-5 border-2 rounded-2xl border-zinc-200 bg-white lg:text-left flex flex-col text-center lg:flex-row gap-5 items-center">
-                    <Inbox :size="32" class="hidden md:block"></Inbox>
-                    
-                    <div>
-                        <h2 class="text-lg leading-none lg:text-2xl font-semibold">Food Trays</h2>
-                        <p class="hidden lg:block">Perfect Pair for Lechon</p>
-                    </div>
-                </button>
+                <div v-for="category in props.categories" v-bind:key="category.id">
+                    <a :href="`#${category.id}`">
+                        <button class="p-5 border-2 rounded-2xl border-zinc-200 w-full bg-white lg:text-left flex flex-col text-center lg:flex-row gap-5 items-center">
+                            <div>
+                                <h2 class="text-lg leading-none lg:text-2xl font-semibold">{{ category.name }}</h2>
+                                <p class="hidden lg:block">{{ category.description }}</p>
+                            </div>
+                        </button>
+                    </a>
+                </div>
             </div>
         </section>
 
-        <!-- Lechon Fiesta -->
          <Section v-bind:key="category.id" v-for="category in props.categories" :gradientStart="category.id % 2 == 0 ? 'right' : 'left'">      
+            <Anchor :id="`${category.id}`"></Anchor>
             <div>
                 <div class="mb-10">
                     <h2 class="text-2xl lg:text-4xl font-bold">{{  category.name }}</h2>
@@ -89,15 +100,63 @@ const props = defineProps([
                         
                         <div>
                             <h3 class="capitalize font-semibold text-xl">{{  product.name }}</h3>
-                            <p class="font-semibold">{{  Number(product.price).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}</p>
+                            <p class="font-semibold">{{  Number(product.price).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}<span v-if="product.unit_type === 'kg'">/kg</span></p>
                         </div>
 
                         <p>{{  product.description }}</p>
 
-                        <Button variant="secondary">Add to Cart</Button>
+                        <Button variant="secondary" @click="openProductModal(product)">Add to Cart</Button>
                     </div>
                 </div>
             </div>
-         </Section>
+        </Section>
+
+        <!-- Add to Cart Modal -->
+         <div v-if="cartModalOpen"  class="fixed z-50 top-0 left-0 bg-black/25 w-screen h-screen flex items-end justify-center lg:grid lg:place-items-center">
+            <div class="bg-white p-5 lg:rounded-3xl w-full overflow-auto max-h-screen max-w-[500px] space-y-5">
+                <h2 class="text-2xl lg:text-3xl capitalize font-bold">{{ selectedProduct.name }}</h2>
+
+                <div class="space-y-2.5">
+                    <img src="" class="aspect-video rounded-2xl bg-green-200" />
+
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="font-semibold text-sm">Price</p>
+                            <p class="font-semibold text-lg">{{ Number(selectedProduct.price).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}<span v-if="selectedProduct.unit_type === 'kg'">/kg</span></p>
+                        </div>
+                    </div>
+
+                    <p>{{ selectedProduct.description }}</p>
+                </div>
+                
+                <Form v-slot="{errors}" method="post" class="space-y-5">
+                    <div class="space-y-2 5">
+                        <div class="space-y-2.5">
+                            <Label for="quantity">Quantity</Label>
+                            <Input type="number" id="quantity" name="quantity"></Input>
+                            <InputError :message="errors.quantity" />
+                        </div>
+                        <div v-if="selectedProduct.unit_type === 'kg'" class="space-y-2.5">
+                            <Label for="weight">Weight</Label>
+                            <Input type="number" id="weight" name="weight"></Input>
+                            <InputError :message="errors.weight" />
+                        </div>
+                        <div v-if="hasFreebies">
+                            <select>
+                                <option v-for="freebie in freebies" v-bind:key="freebie.id">
+                                    {{ freebie.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-2.5">
+                        <Button class="text-xs" variant="secondary" @click="cartModalOpen = false">Cancel</Button>
+                        <Button class="text-xs" variant="primary">Add to Cart</Button>
+                    </div>
+                </Form>
+
+            </div>
+         </div>
     </Site>
 </template>

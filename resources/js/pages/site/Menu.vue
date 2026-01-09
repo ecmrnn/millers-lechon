@@ -4,6 +4,14 @@ import Section from '@/components/Section.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import SelectLabel from '@/components/ui/select/SelectLabel.vue';
 import Site from '@/layouts/Site.vue';
 import { Form } from '@inertiajs/vue3';
 import { Crown } from 'lucide-vue-next';
@@ -112,7 +120,7 @@ watch(cartModalOpen, (value) => {
         </Section>
 
         <!-- Add to Cart Modal -->
-         <div v-if="cartModalOpen"  class="fixed z-50 top-0 left-0 bg-black/25 w-screen h-screen flex items-end justify-center lg:grid lg:place-items-center">
+         <div v-if="cartModalOpen"  class="fixed z-50 top-0 left-0 bg-black/25 w-screen h-screen flex items-end justify-center sm:grid sm:place-items-center">
             <div class="bg-white p-5 lg:rounded-3xl w-full overflow-auto max-h-screen max-w-[500px] space-y-5">
                 <h2 class="text-2xl lg:text-3xl capitalize font-bold">{{ selectedProduct.name }}</h2>
 
@@ -131,22 +139,32 @@ watch(cartModalOpen, (value) => {
                 
                 <Form v-slot="{errors}" method="post" class="space-y-5">
                     <div class="space-y-2 5">
-                        <div class="space-y-2.5">
-                            <Label for="quantity">Quantity</Label>
-                            <Input type="number" id="quantity" name="quantity"></Input>
-                            <InputError :message="errors.quantity" />
+                        <div class="flex gap-5">
+                            <div class="space-y-2.5 w-full">
+                                <Label for="quantity">Quantity</Label>
+                                <Input min="1" defaultValue="1" type="number" id="quantity" name="quantity"></Input>
+                                <InputError v-if="errors.quantity" :message="errors.quantity" />
+                            </div>
+                            <div v-if="selectedProduct.unit_type === 'kg'" class="space-y-2.5 w-full">
+                                <Label for="weight">Weight</Label>
+                                <Input min="1" defaultValue="1" type="number" id="weight" name="weight"></Input>
+                                <InputError v-if="errors.weight" :message="errors.weight" />
+                            </div>
                         </div>
-                        <div v-if="selectedProduct.unit_type === 'kg'" class="space-y-2.5">
-                            <Label for="weight">Weight</Label>
-                            <Input type="number" id="weight" name="weight"></Input>
-                            <InputError :message="errors.weight" />
-                        </div>
-                        <div v-if="hasFreebies">
-                            <select>
-                                <option v-for="freebie in freebies" v-bind:key="freebie.id">
-                                    {{ freebie.name }}
-                                </option>
-                            </select>
+                        <div v-if="hasFreebies" class="space-y-2.5">
+                            <Label for="freebie">Select a Freebie</Label>
+
+                             <Select>
+                                <SelectTrigger class="w-full" id="freebie">
+                                    <SelectValue placeholder="Select a Freebie" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectLabel>Freebies</SelectLabel>
+                                    <SelectItem :value="freebie.name" v-for="freebie in freebies" v-bind:key="freebie.id">
+                                        {{ freebie.name }}
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
 

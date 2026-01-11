@@ -3,6 +3,13 @@ import Navigation from '@/components/Navigation.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { Link } from '@inertiajs/vue3';
 import { ShoppingCart } from 'lucide-vue-next';
+import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+
+const page = usePage();
+const cart = computed(() => page.props.cart);
+const itemCount = computed(() => page.props.itemCount);
+
 </script>
 
 <template>
@@ -18,8 +25,12 @@ import { ShoppingCart } from 'lucide-vue-next';
     
             <div class="hidden lg:flex gap-5 items-stretch">
                 <Link href="/cart">
-                    <button class="aspect-square p-3.5 rounded-full border-2 border-stone-800/25 bg-amber-400 grid place-items-center">
+                    <button class="relative aspect-square p-3.5 rounded-full border-2 border-stone-800/25 bg-amber-400 grid place-items-center">
                         <ShoppingCart></ShoppingCart>
+                        <div v-if="cart !== null" class="bg-red-500 rounded-full w-5 aspect-square grid place-items-center absolute -top-1 -left-1">
+                            <p class="bg-red-500 rounded-full w-1 p-2 animate-ping aspect-square"></p>
+                            <span class="absolute text-xs font-semibold text-white">{{ itemCount }}</span>
+                        </div>
                     </button>
                 </Link>
     

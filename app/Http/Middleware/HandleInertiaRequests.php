@@ -2,8 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Cart;
+use App\Services\CartService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -36,12 +40,14 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
+        $cart = Cart::where('session_id', Session::id())->first();
+
+        Inertia::share('cart', fn () => $cart);
+        Inertia::share('itemCount', fn () => $cart ? $cart->items()->count() : 0);
 
         return [
             ...parent::share($request),
             'name' => config('app.name'),
-            'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
             ],

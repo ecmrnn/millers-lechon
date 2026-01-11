@@ -30,14 +30,21 @@ class CartController extends Controller
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|min:1',
-            'weight' => 'nullable|integer',
+            'weight' => 'nullable|integer|min:1',
             'freebie_id' => 'nullable|exists:freebies,id',
         ]);
-        
+
+        $hasFreebies = Product::find($validated['product_id'])
+            ->category->has_freebies;
+
+        if ($hasFreebies && $validated['freebie_id'] === null) {
+            $request->validate(['freebie_id' => 'required']);
+        }
+
         $cart = $this->cartService->addItem(
             $validated['product_id'],
             $validated['quantity'],  
-            $validated['weight'] ?? null,
+            $validated['weight'] ?? 0,
             $validated['freebie_id'] ?? null
         );
 

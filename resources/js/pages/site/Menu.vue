@@ -42,7 +42,6 @@ const hasFreebies = computed(() => {
 
 const selectFreebie = (freebie_id: number) => {
     selectedFreebie.value = freebie_id;
-    console.log(selectedFreebie.value)
 }
 
 watch(cartModalOpen, (value) => {
@@ -53,6 +52,11 @@ watch(cartModalOpen, (value) => {
         selectedFreebie.value = null;
     }
 })
+
+const closeModal = () => {
+    cartModalOpen.value = false;
+    selectedFreebie.value = false;
+}
 </script>
 
 <template>
@@ -147,7 +151,7 @@ watch(cartModalOpen, (value) => {
                     <p>{{ selectedProduct.description }}</p>
                 </div>
                 
-                <Form v-slot="{ errors, processing }" v-bind="addItem.form()" class="space-y-5">
+                <Form v-slot="{ errors, processing }" @submitComplete="closeModal"  v-bind="addItem.form()" :options="{preserveScroll:true}" class="space-y-5">
                     <input type="hidden" :value="selectedProduct.id" id="product_id" name="product_id" />
                     <input v-if="hasFreebies" type="hidden" :value="selectedFreebie ? selectedFreebie : ''" id="freebie_id" name="freebie_id" />
                     
@@ -156,7 +160,7 @@ watch(cartModalOpen, (value) => {
                             <div class="space-y-2.5 w-full">
                                 <Label for="quantity">Quantity</Label>
                                 <Input min="1" defaultValue="1" type="number" id="quantity" name="quantity"></Input>
-                                <InputError v-if="errors.quantity" :message="errors.quantity" />
+                                <InputError :message="errors.quantity" />
                             </div>
                             <div v-if="selectedProduct.unit_type === 'kg'" class="space-y-2.5 w-full">
                                 <Label for="weight">Weight</Label>
@@ -179,6 +183,7 @@ watch(cartModalOpen, (value) => {
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
+                            <InputError v-if="errors.freebie_id" :message="errors.freebie_id" />
                         </div>
                     </div>
 

@@ -13,10 +13,13 @@ import {
 } from '@/components/ui/select'
 import SelectLabel from '@/components/ui/select/SelectLabel.vue';
 import Site from '@/layouts/Site.vue';
-import { Form } from '@inertiajs/vue3';
 import { Crown } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
-// import { Link } from '@inertiajs/vue3';
+import InputError from '@/components/InputError.vue';
+import { Form } from '@inertiajs/vue3';
+import { addItem } from '@/routes/cart';
+// import NativeSelect from '@/components/ui/native-select/NativeSelect.vue';
+// import NativeSelectOption from '@/components/ui/native-select/NativeSelectOption.vue';
 
 const props = defineProps({
     categories: Object,
@@ -26,6 +29,7 @@ const props = defineProps({
 
 const cartModalOpen = ref(false);
 const selectedProduct = ref();
+const selectedFreebie = ref();
 
 const openProductModal = (product: object) => {
     selectedProduct.value = product;
@@ -36,11 +40,17 @@ const hasFreebies = computed(() => {
     return selectedProduct.value.category.has_freebies === 1;
 });
 
+const selectFreebie = (freebie_id: number) => {
+    selectedFreebie.value = freebie_id;
+    console.log(selectedFreebie.value)
+}
+
 watch(cartModalOpen, (value) => {
     if (value) {
         document.body.classList.add('overflow-hidden');
     } else {
         document.body.classList.remove('overflow-hidden');
+        selectedFreebie.value = null;
     }
 })
 </script>
@@ -107,11 +117,11 @@ watch(cartModalOpen, (value) => {
                         <img src="" class="aspect-video rounded-xl bg-green-200" />
                         
                         <div>
-                            <h3 class="capitalize font-semibold text-xl">{{  product.name }}</h3>
+                            <h3 class="capitalize font-bold text-2xl">{{  product.name }}</h3>
                             <p class="font-semibold">{{  Number(product.price).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}<span v-if="product.unit_type === 'kg'">/kg</span></p>
                         </div>
 
-                        <p>{{  product.description }}</p>
+                        <p>{{ product.description }}</p>
 
                         <Button variant="secondary" @click="openProductModal(product)">Add to Cart</Button>
                     </div>
@@ -137,7 +147,10 @@ watch(cartModalOpen, (value) => {
                     <p>{{ selectedProduct.description }}</p>
                 </div>
                 
-                <Form v-slot="{errors}" method="post" class="space-y-5">
+                <Form v-slot="{ errors, processing }" v-bind="addItem.form()" class="space-y-5">
+                    <input type="hidden" :value="selectedProduct.id" id="product_id" name="product_id" />
+                    <input v-if="hasFreebies" type="hidden" :value="selectedFreebie ? selectedFreebie : ''" id="freebie_id" name="freebie_id" />
+                    
                     <div class="space-y-2 5">
                         <div class="flex gap-5">
                             <div class="space-y-2.5 w-full">
@@ -155,12 +168,13 @@ watch(cartModalOpen, (value) => {
                             <Label for="freebie">Select a Freebie</Label>
 
                              <Select>
-                                <SelectTrigger class="w-full" id="freebie">
+                                <SelectTrigger class="w-full" id="freebie" name="freebie">
                                     <SelectValue placeholder="Select a Freebie" />
                                 </SelectTrigger>
+
                                 <SelectContent>
                                     <SelectLabel>Freebies</SelectLabel>
-                                    <SelectItem :value="freebie.name" v-for="freebie in freebies" v-bind:key="freebie.id">
+                                    <SelectItem @click="selectFreebie(freebie.id)" :value="freebie.name" v-for="freebie in freebies" v-bind:key="freebie.id">
                                         {{ freebie.name }}
                                     </SelectItem>
                                 </SelectContent>
@@ -169,11 +183,10 @@ watch(cartModalOpen, (value) => {
                     </div>
 
                     <div class="flex justify-end gap-2.5">
-                        <Button class="text-xs" variant="secondary" @click="cartModalOpen = false">Cancel</Button>
-                        <Button class="text-xs" variant="primary">Add to Cart</Button>
+                        <Button :disabled="processing" class="text-xs" variant="secondary" @click="cartModalOpen = false">Cancel</Button>
+                        <Button :disabled="processing" class="text-xs" variant="primary" type="submit">Add to Cart</Button>
                     </div>
                 </Form>
-
             </div>
          </div>
     </Site>

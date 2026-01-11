@@ -7,10 +7,16 @@ import { ShoppingCart } from 'lucide-vue-next';
 
 <template>
     <div class="bg-zinc-100/50 tracking-wide">
-        <header class="p-5 sticky z-50 top-0 bg-zinc-100 flex justify-between items-start">
+        <header class="p-5 sticky z-50 top-0 bg-zinc-100 flex justify-between items-center lg:items-start">
+            <Link href="/" class="lg:hidden">
+                <p class="font-bold text-xl leading-tight uppercase">
+                    Miller's <br /> Lechon
+                </p>
+            </Link>
+            
             <Navigation></Navigation>
     
-            <div class="flex gap-5 items-stretch">
+            <div class="hidden lg:flex gap-5 items-stretch">
                 <Link href="/cart">
                     <button class="aspect-square p-3.5 rounded-full border-2 border-stone-800/25 bg-amber-400 grid place-items-center">
                         <ShoppingCart></ShoppingCart>
@@ -34,7 +40,6 @@ import { ShoppingCart } from 'lucide-vue-next';
                 <p class="text-xl">Since 1974</p>
             </div>
     
-    
             <nav class="flex gap-5 lg:gap-20 flex-col xl:flex-row">
                 <div>
                     <h2 class="font-semibold uppercase mb-5">Navigation</h2>
@@ -42,7 +47,6 @@ import { ShoppingCart } from 'lucide-vue-next';
                         <li><Link href="/">Home</Link></li>
                         <li><Link href="/about">About</Link></li>
                         <li><Link href="/menu">Menu</Link></li>
-                        <li><Link href="/order">Order</Link></li>
                     </ul>
                 </div>
     

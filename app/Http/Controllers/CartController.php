@@ -33,15 +33,15 @@ class CartController extends Controller
             'weight' => 'nullable|integer',
             'freebie_id' => 'nullable|exists:freebies,id',
         ]);
-
+        
         $cart = $this->cartService->addItem(
             $validated['product_id'],
             $validated['quantity'],  
-            $validated['weight'],
-            $validated['freebie_id'] 
+            $validated['weight'] ?? null,
+            $validated['freebie_id'] ?? null
         );
 
-        return response()->json(['cart' => $cart], 201);
+        return back();
     }
 
     public function removeItem(Request $request)

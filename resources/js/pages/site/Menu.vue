@@ -30,6 +30,8 @@ const props = defineProps({
 const cartModalOpen = ref(false);
 const selectedProduct = ref();
 const selectedFreebie = ref();
+const quantity = ref(1);
+const weight = ref(1);
 
 const openProductModal = (product: object) => {
     selectedProduct.value = product;
@@ -50,6 +52,8 @@ watch(cartModalOpen, (value) => {
     } else {
         document.body.classList.remove('overflow-hidden');
         selectedFreebie.value = null;
+        quantity.value = 1;
+        weight.value = 1;
     }
 })
 
@@ -144,7 +148,7 @@ const closeModal = () => {
                     <div class="flex justify-between">
                         <div>
                             <p class="font-semibold text-sm">Price</p>
-                            <p class="font-semibold text-lg">{{ Number(selectedProduct.price).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}<span v-if="selectedProduct.unit_type === 'kg'">/kg</span></p>
+                            <p class="font-semibold text-lg">{{ Number(selectedProduct.price * quantity * weight).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}<span v-if="selectedProduct.unit_type === 'kg'">/kg</span></p>
                         </div>
                     </div>
 
@@ -159,12 +163,12 @@ const closeModal = () => {
                         <div class="flex gap-5">
                             <div class="space-y-2.5 w-full">
                                 <Label for="quantity">Quantity</Label>
-                                <Input min="1" defaultValue="1" type="number" id="quantity" name="quantity"></Input>
+                                <Input v-model="quantity" min="1" defaultValue="1" type="number" id="quantity" name="quantity"></Input>
                                 <InputError :message="errors.quantity" />
                             </div>
                             <div v-if="selectedProduct.unit_type === 'kg'" class="space-y-2.5 w-full">
-                                <Label for="weight">Weight</Label>
-                                <Input min="1" defaultValue="1" type="number" id="weight" name="weight"></Input>
+                                <Label for="weight">Weight (Kg.)</Label>
+                                <Input v-model="weight" min="1" defaultValue="1" type="number" id="weight" name="weight"></Input>
                                 <InputError v-if="errors.weight" :message="errors.weight" />
                             </div>
                         </div>

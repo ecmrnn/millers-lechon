@@ -4,15 +4,29 @@ import Button from '@/components/ui/button/Button.vue';
 import { Link } from '@inertiajs/vue3';
 import { ShoppingCart } from 'lucide-vue-next';
 import { usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
-
+import { computed, watch } from 'vue';
+import 'vue-sonner/style.css'
+import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'vue-sonner'
 const page = usePage();
 const cart = computed(() => page.props.cart);
 const itemCount = computed(() => page.props.itemCount);
+const flash = computed(() => page.props.flash as any);
+
+watch(flash, () => {
+    toast.success('Add to Cart Success!', {
+        description: flash.value.success
+    });
+})
 
 </script>
 
 <template>
+    <Toaster
+        position="top-center"
+        :richColors="true"
+        style="font-family: inherit;" />
+
     <div class="bg-zinc-100/50 tracking-wide">
         <header class="p-5 sticky z-50 top-0 bg-zinc-100 flex justify-between items-center lg:items-start">
             <Link href="/" class="lg:hidden">

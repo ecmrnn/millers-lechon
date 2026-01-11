@@ -34,10 +34,10 @@ class CartController extends Controller
             'freebie_id' => 'nullable|exists:freebies,id',
         ]);
 
-        $hasFreebies = Product::find($validated['product_id'])
-            ->category->has_freebies;
+        $product = Product::find($validated['product_id']);
+        $productName = $product->name;
 
-        if ($hasFreebies && $validated['freebie_id'] === null) {
+        if ($product->category->has_freebies && $validated['freebie_id'] === null) {
             $request->validate(['freebie_id' => 'required']);
         }
 
@@ -48,7 +48,7 @@ class CartController extends Controller
             $validated['freebie_id'] ?? null
         );
 
-        return back();
+        return back()->with('success', "$productName added to cart!");
     }
 
     public function removeItem(Request $request)

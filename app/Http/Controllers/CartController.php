@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Services\CartService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class CartController extends Controller
@@ -17,12 +19,24 @@ class CartController extends Controller
     {
         $this->cartService = $_cartService;
     }
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
-        // return Inertia::render('cart/Index');
+        $cart = $this->cartService->getCart();
+        $totalSum = 0;
+
+        foreach ($cart->items as $item) {
+            $totalSum += ($item->quantity * $item->price * ($item->weight ? $item->weight : 1));
+        }
+
+        // Calculate delivery costs
+        $deliveryCost = 0;
+
+        return Inertia::render('site/Cart', [
+            'cart' => $cart,
+            'totalSum' => $totalSum,
+            'deliveryCost' => $deliveryCost,
+        ]);
     }
 
     public function addItem(Request $request)
@@ -41,7 +55,7 @@ class CartController extends Controller
             $request->validate(['freebie_id' => 'required']);
         }
 
-        $cart = $this->cartService->addItem(
+        $this->cartService->addItem(
             $validated['product_id'],
             $validated['quantity'],  
             $validated['weight'] ?? 0,
@@ -57,14 +71,17 @@ class CartController extends Controller
             'cart_item_id' => 'exists:cart_items,id|required'
         ]);
 
-        $cart = $this->cartService->removeItem($validated['cart_item_id']);
+        $product = Product::find($validated['cart_item_id']);
+        $productName = $product->name;
 
-        return response()->json(['cart' => $cart], 200);
+        $this->cartService->removeItem($validated['cart_item_id']);
+
+        return back()->with('success', "$productName removed from cart!");
     }
 
     public function clear(Request $request) {
-        $cart = $this->cartService->removeAllItems();
+        $this->cartService->removeAllItems();
 
-        return response()->json(['cart' => $cart], 200);
+        return back()->with('success', 'All items removed from cart!');
     }
 }

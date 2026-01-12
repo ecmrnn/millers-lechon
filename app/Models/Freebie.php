@@ -13,4 +13,9 @@ class Freebie extends Model
     {
         return $this->hasMany(OrderProduct::class);
     }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(CartItem::class);
+    }
 }

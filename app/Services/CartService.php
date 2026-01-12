@@ -19,15 +19,19 @@ class CartService
         
         if ($userId)
         {
-            return Cart::where('customer_id', Auth::id())->firstOrCreate(
-                ['customer_id' => Auth::id()],
-                ['session_id' => $sessionId, 'status' => 'active']
-            );
+            return Cart::with('items.product')
+                ->with('items.freebie')
+                ->where('customer_id', Auth::id())->firstOrCreate(
+                    ['customer_id' => Auth::id()],
+                    ['session_id' => $sessionId, 'status' => 'active']
+                );
         }
 
-        return Cart::where('session_id', $sessionId)->firstOrCreate(
-            ['session_id' => $sessionId],
-            ['status' => 'active']
+        return Cart::with('items.product')
+            ->with('items.freebie')
+            ->where('session_id', $sessionId)->firstOrCreate(
+                ['session_id' => $sessionId],
+                ['status' => 'active']
         );
     }
 

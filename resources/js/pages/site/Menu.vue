@@ -175,7 +175,7 @@ const closeModal = () => {
                         <div v-if="hasFreebies" class="space-y-2.5">
                             <Label for="freebie">Select a Freebie</Label>
 
-                             <Select>
+                            <Select>
                                 <SelectTrigger class="w-full" id="freebie" name="freebie">
                                     <SelectValue placeholder="Select a Freebie" />
                                 </SelectTrigger>

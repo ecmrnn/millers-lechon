@@ -4,11 +4,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PageController;
-use App\Models\Cart;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
-use Laravel\Fortify\Features;
 
 Route::get('/', [PageController::class, 'welcome'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');

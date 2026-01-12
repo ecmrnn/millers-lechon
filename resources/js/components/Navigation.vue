@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { Home, Menu, NotebookTabs, PiggyBank, ShoppingCart, X } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Button from './ui/button/Button.vue';
 const menuToggle = ref(true);
+import { usePage } from '@inertiajs/vue3';
+const page = usePage();
+const itemCount = computed(() => page.props.itemCount as number);
+
 const links = [
     {
         'icon': Home,
@@ -75,8 +79,12 @@ const links = [
 
                 <div class="flex lg:hidden gap-5 items-stretch">
                     <Link href="/cart">
-                        <button class="aspect-square p-3.5 rounded-full border-2 border-stone-800/25 bg-amber-400 grid place-items-center">
+                        <button class="aspect-square relative p-3.5 rounded-full border-2 border-stone-800/25 bg-amber-400 grid place-items-center">
                             <ShoppingCart></ShoppingCart>
+                            <div v-if="itemCount > 0" class="bg-red-500 rounded-full w-5 aspect-square grid place-items-center absolute -top-1 -left-1">
+                            <p class="bg-red-500 rounded-full w-1 p-2 animate-ping aspect-square"></p>
+                            <span class="absolute text-xs font-semibold text-white">{{ itemCount }}</span>
+                        </div>
                         </button>
                     </Link>
         

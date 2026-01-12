@@ -21,7 +21,7 @@ if (props.gradientStart) {
 </script>
 
 <template>
-    <section class="p-5 pt-6 lg:p-20 bg-white rounded-3xl relative overflow-hidden z-10">
+    <section class="p-5 pt-6 lg:p-20 bg-white rounded-xl lg:rounded-3xl relative overflow-hidden z-10">
         <div class="z-10 relative">
             <slot></slot>
         </div>

@@ -41,8 +41,6 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $cart = Cart::where('session_id', Session::id())->first();
-
-        Inertia::share('cart', fn () => $cart);
         Inertia::share('itemCount', fn () => $cart ? $cart->items()->count() : 0);
 
         return [

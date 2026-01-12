@@ -9,14 +9,15 @@ import 'vue-sonner/style.css'
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'vue-sonner'
 const page = usePage();
-const cart = computed(() => page.props.cart);
-const itemCount = computed(() => page.props.itemCount);
+const itemCount = computed(() => page.props.itemCount as number);
 const flash = computed(() => page.props.flash as any);
 
 watch(flash, () => {
-    toast.success('Add to Cart Success!', {
-        description: flash.value.success
-    });
+    if (flash.value.success) {
+        toast.success('Cart Updated', {
+            description: flash.value.success
+        });
+    }
 })
 
 </script>
@@ -41,7 +42,7 @@ watch(flash, () => {
                 <Link href="/cart">
                     <button class="relative aspect-square p-3.5 rounded-full border-2 border-stone-800/25 bg-amber-400 grid place-items-center">
                         <ShoppingCart></ShoppingCart>
-                        <div v-if="cart !== null" class="bg-red-500 rounded-full w-5 aspect-square grid place-items-center absolute -top-1 -left-1">
+                        <div v-if="itemCount > 0" class="bg-red-500 rounded-full w-5 aspect-square grid place-items-center absolute -top-1 -left-1">
                             <p class="bg-red-500 rounded-full w-1 p-2 animate-ping aspect-square"></p>
                             <span class="absolute text-xs font-semibold text-white">{{ itemCount }}</span>
                         </div>

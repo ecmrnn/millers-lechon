@@ -16,4 +16,14 @@ class CartItem extends Model
     {
         return $this->belongsTo(Cart::class);
     }
+
+    public function freebie(): BelongsTo
+    {
+        return $this->belongsTo(Freebie::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

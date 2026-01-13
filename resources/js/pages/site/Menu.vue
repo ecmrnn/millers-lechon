@@ -18,8 +18,7 @@ import { computed, ref, watch } from 'vue';
 import InputError from '@/components/InputError.vue';
 import { Form } from '@inertiajs/vue3';
 import { addItem } from '@/routes/cart';
-// import NativeSelect from '@/components/ui/native-select/NativeSelect.vue';
-// import NativeSelectOption from '@/components/ui/native-select/NativeSelectOption.vue';
+import Dialog from '@/components/ui/dialog/Dialog.vue';
 
 const props = defineProps({
     categories: Object,
@@ -47,14 +46,11 @@ const selectFreebie = (freebie_id: number) => {
 }
 
 watch(cartModalOpen, (value) => {
-    if (value) {
-        document.body.classList.add('overflow-hidden');
-    } else {
-        document.body.classList.remove('overflow-hidden');
+    if (!value) {
         selectedFreebie.value = null;
         quantity.value = 1;
         weight.value = 1;
-    }
+    } 
 })
 
 const closeModal = () => {
@@ -138,9 +134,8 @@ const closeModal = () => {
         </Section>
 
         <!-- Add to Cart Modal -->
-         <div v-if="cartModalOpen"  class="fixed z-50 top-0 left-0 bg-black/25 w-screen h-screen flex items-end justify-center sm:grid sm:place-items-center">
-            <div class="bg-white p-5 lg:rounded-3xl w-full overflow-auto max-h-screen max-w-[500px] space-y-5">
-                <h2 class="text-2xl lg:text-3xl capitalize font-bold">{{ selectedProduct.name }}</h2>
+         <Dialog :dialogOpen="cartModalOpen">
+            <h2 class="text-2xl lg:text-3xl capitalize font-bold">{{ selectedProduct.name }}</h2>
 
                 <div class="space-y-2.5">
                     <img src="" class="aspect-video rounded-2xl bg-green-200" />
@@ -196,7 +191,6 @@ const closeModal = () => {
                         <Button :disabled="processing" class="text-xs" variant="primary" type="submit">Add to Cart</Button>
                     </div>
                 </Form>
-            </div>
-         </div>
+         </Dialog>
     </Site>
 </template>

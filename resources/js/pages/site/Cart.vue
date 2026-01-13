@@ -17,6 +17,7 @@ import {
 import SelectLabel from '@/components/ui/select/SelectLabel.vue';
 import Label from '@/components/ui/label/Label.vue';
 import Input from '@/components/ui/input/Input.vue';
+import Dialog from '@/components/ui/dialog/Dialog.vue';
 
 defineProps({
     cart: Object,
@@ -27,6 +28,19 @@ defineProps({
 const page = usePage();
 const itemCount = computed(() => page.props.itemCount as number);
 const shippingMode = ref('pick_up');
+const clearCart = ref(false);
+const removeItemDialog = ref(false);
+const selectedItem = ref();
+
+const selectItem = (item: []) => {
+    selectedItem.value = item;
+    removeItemDialog.value = true;
+}
+
+const closeModal = () => {
+    removeItemDialog.value = false;
+    selectedItem.value = [];
+}
 </script>
 
 <template>
@@ -65,12 +79,9 @@ const shippingMode = ref('pick_up');
                             <p class="text-center self-center">{{ item.quantity }}</p>
                             <p class="text-center self-center font-semibold">{{ Number(item.quantity * item.price * (item.weight ? item.weight : 1)).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}</p>
                             <div class="absolute top-1/2 right-5 -translate-y-1/2">
-                                <Form v-bind="removeItem.form()" method="post">
-                                    <input type="hidden" :value="item.id" id="cart_item_id" name="cart_item_id" />
-                                    <button class="p-2">
-                                        <Trash2></Trash2>
-                                    </button>
-                                </Form>
+                                <button type="button" @click="selectItem(item)" class="p-2">
+                                    <Trash2></Trash2>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -182,9 +193,8 @@ const shippingMode = ref('pick_up');
                         </div>
 
                         <div class="flex justify-end gap-5">
-                            <Form v-bind="clear.form()" method="post">
-                                <Button variant="secondary">Empty Cart</Button>
-                            </Form>
+                            <Button type="button" @click="clearCart = true" variant="secondary">Empty Cart</Button>
+
                             <Button variant="primary">Checkout</Button>
                         </div>
                     </div>
@@ -202,5 +212,47 @@ const shippingMode = ref('pick_up');
                 </Link>
             </div>
         </Section>
+
+        <Dialog :dialogOpen="clearCart">
+            <div class="mb-5">
+                <h2 class="text-2xl text-red-500 font-semibold">Clear Cart</h2>
+                <p>Are you sure you really want to clear your cart? This action cannot be undone.</p>
+            </div>
+            <Form v-slot="{ processing }" v-bind="clear.form()" method="post" class="flex justify-end gap-5">
+                <Button :disabled="processing" class="text-xs" @click="clearCart = false" variant="secondary">Cancel</Button>
+                <Button :disabled="processing" class="text-xs" type="submit" variant="danger">Empty Cart</Button>
+            </Form>
+        </Dialog>
+
+        <Dialog :dialogOpen="removeItemDialog">
+            <div class="mb-5">
+                <h2 class="text-2xl text-red-500 font-semibold">Remove Item</h2>
+                <p>Are you sure you want to remove this item?</p>
+            </div>
+
+            <div v-if="selectedItem != null" class="mb-5 space-y-2.5 p-5 border-2 rounded-lg border-zinc-200">
+                <div class="flex flex-col lg:flex-row items-center gap-5">
+                    <div class="aspect-video lg:aspect-square shrink-0 w-full lg:w-[75px] rounded-lg bg-green-200">{{ selectedItem.product.image }}</div>
+                    
+                    <div class="w-full flex gap-5 justify-between">
+                        <div>
+                            <p class="font-semibold text-lg capitalize">{{ selectedItem.product.name }}</p>
+                            <p v-if="selectedItem.freebie" class="capitalize">{{ selectedItem.freebie.name }}</p>
+                            <p v-if="selectedItem.weight">{{ selectedItem.weight }}kg.</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold text-lg capitalize">Total Price</p>
+                            <p>{{ Number(selectedItem.price * selectedItem.quantity * (selectedItem.weight ? selectedItem.weight : 1)).toLocaleString('en-US', {style: 'currency', currency: 'PHP'}) }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <Form v-slot="{ processing }" @submitComplete="closeModal" v-bind="removeItem.form()" method="post" class="flex justify-end gap-5">
+                <input type="hidden" :value="selectedItem.id" id="cart_item_id" name="cart_item_id" />
+                <Button :disabled="processing" class="text-xs" @click="removeItemDialog = false" variant="secondary">Cancel</Button>
+                <Button :disabled="processing" class="text-xs" type="submit" variant="danger">Remove Item</Button>
+            </Form>
+        </Dialog>
     </Site>
 </template>

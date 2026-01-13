@@ -71,8 +71,8 @@ class CartController extends Controller
             'cart_item_id' => 'exists:cart_items,id|required'
         ]);
 
-        $product = Product::find($validated['cart_item_id']);
-        $productName = $product->name;
+        $cartItem = CartItem::find($validated['cart_item_id']);
+        $productName = $cartItem->product->name;
 
         $this->cartService->removeItem($validated['cart_item_id']);
 
